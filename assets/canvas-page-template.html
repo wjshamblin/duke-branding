@@ -1,0 +1,93 @@
+<!--
+  Duke-branded page for the Canvas LMS Rich Content Editor (HTML view).
+
+  Canvas sanitizes what you paste. Verified against its allowlist
+  (instructure/canvas-lms, gems/canvas_sanitize/lib/canvas_sanitize/canvas_sanitize.rb):
+    STRIPPED  <style>, <link>, <script>, <svg>, form controls. So no classes, no CSS
+              variables, no web fonts: every style is inline with literal hex values.
+    DROPPED   font-weight, text-transform, letter-spacing, box-shadow, opacity, filter,
+              transition. So bold is <strong>, capitals are typed, and there are no shadows.
+    KEPT      color, background(-color), border(-left etc.), border-radius, padding, margin,
+              font-family, font-size, font-style, line-height, text-align, width, display, flex.
+  Canvas prints the page title as the <h1>, so content starts at <h2>.
+  Brand web fonts cannot load. Georgia (an official Duke face) carries the headings and
+  the body inherits Canvas's own sans.
+
+  COLORS are double-brace placeholders (for example base, link, accent_text), because two roles can share one hex value and a
+  find-and-replace would then change both. Fill them with:
+    python3 scripts/duke_brand.py render assets/canvas-page-template.html --group <slug> > page.html
+  (omit --group for plain Duke). That also fills the unit name and footer from the group
+  profile. Then replace the [bracketed] content.
+
+  WORDMARK: Canvas cannot load a file from this skill. Upload
+  assets/logos/tight/duke_wordmark_white.png to the course Files, then replace the
+  marked comment in the band with:
+    <img src="[Canvas file URL]" alt="Duke" width="110" height="56" style="vertical-align: middle;">
+  Until then the band carries the unit name only. Do not type "Duke" as a stand-in.
+  Delete this comment before pasting.
+-->
+<div style="max-width: 860px; margin: 0 auto; color: {{text}}; font-size: 16px; line-height: 1.6;">
+
+  <div style="background: {{base}}; color: #ffffff; padding: 14px 22px; border-bottom: 4px solid {{accent_on_base}};">
+    <!-- WORDMARK IMAGE GOES HERE, followed by a space -->
+    <span style="color: {{accent_on_base}}; font-size: 15px;"><strong>{{unit_caps}}</strong></span>
+    <div style="font-family: Georgia, 'Times New Roman', serif; font-size: 30px; line-height: 1.2; margin-top: 6px;">[Page or week title]</div>
+    <div style="font-size: 15px; margin-top: 4px;">[Course code and name] &middot; [Instructor]</div>
+  </div>
+
+  <p style="font-size: 18px; color: {{text_muted}}; margin: 20px 0 8px;">[One-sentence lead: what this page is for.]</p>
+
+  <h2 style="font-family: Georgia, 'Times New Roman', serif; font-size: 25px; color: {{base}}; border-bottom: 3px solid {{accent_on_base}}; padding-bottom: 4px; margin: 28px 0 12px;">Overview</h2>
+  <p style="margin: 0 0 14px;">[Body copy. Short paragraphs. Links look like <a style="color: {{link}}; text-decoration: underline;" href="#">this</a>.]</p>
+
+  <div style="background: {{background_warm}}; border-left: 4px solid {{rule_on_white}}; padding: 14px 18px; margin: 20px 0;">
+    <p style="margin: 0 0 4px;"><strong>[Heads up]</strong></p>
+    <p style="margin: 0;">[One or two sentences the reader must not miss.]</p>
+  </div>
+
+  <h2 style="font-family: Georgia, 'Times New Roman', serif; font-size: 25px; color: {{base}}; border-bottom: 3px solid {{accent_on_base}}; padding-bottom: 4px; margin: 28px 0 12px;">Learning objectives</h2>
+  <ol style="margin: 0 0 14px; padding-left: 24px;">
+    <li style="margin: 4px 0;">[Objective]</li>
+    <li style="margin: 4px 0;">[Objective]</li>
+  </ol>
+
+  <h2 style="font-family: Georgia, 'Times New Roman', serif; font-size: 25px; color: {{base}}; border-bottom: 3px solid {{accent_on_base}}; padding-bottom: 4px; margin: 28px 0 12px;">What's due</h2>
+  <div style="display: flex; gap: 14px;">
+    <div style="flex: 1; border: 1px solid {{border}}; border-top: 4px solid {{base}}; padding: 12px 16px;">
+      <p style="margin: 0; color: {{accent_text}}; font-size: 13px;"><strong>[LABEL]</strong></p>
+      <p style="margin: 2px 0 0; font-family: Georgia, serif; font-size: 19px; color: {{base}};">[Item]</p>
+      <p style="margin: 4px 0 0;">Due <strong>[day, date, time]</strong></p>
+    </div>
+    <div style="flex: 1; border: 1px solid {{border}}; border-top: 4px solid {{link}}; padding: 12px 16px;">
+      <p style="margin: 0; color: {{accent_text}}; font-size: 13px;"><strong>[LABEL]</strong></p>
+      <p style="margin: 2px 0 0; font-family: Georgia, serif; font-size: 19px; color: {{base}};">[Item]</p>
+      <p style="margin: 4px 0 0;">Opens <strong>[day, date]</strong></p>
+    </div>
+  </div>
+
+  <h2 style="font-family: Georgia, 'Times New Roman', serif; font-size: 25px; color: {{base}}; border-bottom: 3px solid {{accent_on_base}}; padding-bottom: 4px; margin: 28px 0 12px;">Office hours</h2>
+  <table style="width: 100%; border-collapse: collapse;">
+    <caption style="text-align: left; color: {{text_muted}}; font-size: 14px; padding-bottom: 6px;">[What this table shows]</caption>
+    <thead>
+      <tr>
+        <th scope="col" style="background: {{base}}; color: #ffffff; text-align: left; padding: 9px 12px;">Who</th>
+        <th scope="col" style="background: {{base}}; color: #ffffff; text-align: left; padding: 9px 12px;">When</th>
+        <th scope="col" style="background: {{base}}; color: #ffffff; text-align: left; padding: 9px 12px;">Where</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 9px 12px; border-bottom: 1px solid {{border}};">[Name]</td>
+        <td style="padding: 9px 12px; border-bottom: 1px solid {{border}};">[Day, time]</td>
+        <td style="padding: 9px 12px; border-bottom: 1px solid {{border}};">[Place]</td>
+      </tr>
+      <tr>
+        <td style="padding: 9px 12px; border-bottom: 1px solid {{border}}; background: {{background_alt}};">[Name]</td>
+        <td style="padding: 9px 12px; border-bottom: 1px solid {{border}}; background: {{background_alt}};">[Day, time]</td>
+        <td style="padding: 9px 12px; border-bottom: 1px solid {{border}}; background: {{background_alt}};">[Place]</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="margin: 28px 0 0; padding-top: 12px; border-top: 1px solid {{border}}; font-size: 13px; color: {{text_muted}};">{{footer}} &middot; Updated [date]</p>
+</div>

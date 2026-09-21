@@ -1,0 +1,23 @@
+{
+  "name": "Department of Computer Science",
+  "short_name": "Duke CS",
+  "parent": "trinity",
+  "lockup": {
+    "lines": [
+      "Department of",
+      "Computer Science"
+    ],
+    "orientation": "horizontal"
+  },
+  "logo": {
+    "primary": "",
+    "reversed": "",
+    "symbol": ""
+  },
+  "accent": "",
+  "accent_2": "",
+  "fonts": {},
+  "url": "https://cs.duke.edu",
+  "footer": "Department of Computer Science · Trinity College of Arts & Sciences · Duke University",
+  "notes": "Inherits everything from trinity, whose shared web theme cs.duke.edu uses. The live site shows the parent name in very small caps under the wordmark. Measured from the live site on 2026-09-21 (see references/real-world-patterns.md)."
+}

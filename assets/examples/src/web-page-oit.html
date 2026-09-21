@@ -1,0 +1,409 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research Computing | Duke OIT</title><link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"><style>/* ============================================================
+   Duke University — Alternate Theme
+   Navy base + Copper/Persimmon/Eno accents from extended palette.
+   Drop this <style> block into the <head> of any HTML deliverable.
+   Components read the semantic variables (--duke-accent etc.), so the
+   primary theme or a group profile is applied by pasting the override
+   block from `scripts/duke_brand.py tokens --format css` after this file.
+   Designed to render correctly inside Canvas's sanitized HTML.
+   ============================================================ */
+
+:root {
+  /* Primary */
+  --duke-navy:        #012169;
+  --duke-royal:       #00539B;
+
+  /* Extended — warm (alternate-theme accents) */
+  --duke-copper:      #C84E00;
+  --duke-persimmon:   #E89923;
+  --duke-dandelion:   #FFD960;
+  --duke-piedmont:    #A1B70D;
+
+  /* Extended — cool */
+  --duke-eno:         #339898;
+  --duke-magnolia:    #1D6363;
+  --duke-prussian:    #005587;
+  --duke-shale:       #0577B1;
+  --duke-ironweed:    #993399;
+
+  /* Neutrals */
+  --duke-cast-iron:   #262626;
+  --duke-graphite:    #666666;
+  --duke-granite:     #B5B5B5;
+  --duke-limestone:   #E5E5E5;
+  --duke-whisper:     #F3F2F1;
+  --duke-hatteras:    #E2E6ED;
+  --duke-ginger-beer: #FCF7E5;
+  --duke-shackleford: #DAD0C6;
+  --duke-dogwood:     #988675;
+
+  /* Semantic */
+  --duke-text:        var(--duke-cast-iron);
+  --duke-text-muted:  var(--duke-graphite);
+  --duke-bg:          #ffffff;
+  --duke-bg-alt:      var(--duke-whisper);
+  --duke-bg-warm:     var(--duke-ginger-beer);
+  --duke-border:      var(--duke-limestone);
+  --duke-link:        var(--duke-prussian);
+  --duke-link-hover:  var(--duke-copper);
+  --duke-accent:      var(--duke-copper);
+  --duke-accent-2:    var(--duke-eno);
+  --duke-accent-text: var(--duke-accent);   /* accent when it is AA on white, else navy */
+  --duke-base:        var(--duke-navy);     /* a group may set Royal instead */
+  --duke-accent-on-base: var(--duke-dandelion); /* accent that is AA on the base blue */
+  --duke-highlight:   var(--duke-persimmon);
+  --duke-on-accent:   #ffffff;              /* text colour on accent fills */
+
+  --duke-radius:      4px;
+  --duke-shadow:      0 1px 3px rgba(1, 33, 105, 0.08), 0 4px 12px rgba(1, 33, 105, 0.06);
+  --duke-font-sans:   "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --duke-font-serif:  "Playfair Display", "EB Garamond", Georgia, "Times New Roman", serif;
+  --duke-font-mono:   "Roboto Mono", Menlo, Consolas, monospace;
+}
+
+/* ---------- Base typography ---------- */
+
+.duke {
+  font-family: var(--duke-font-sans);
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--duke-text);
+  background: var(--duke-bg);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.duke h1, .duke h2, .duke h3 {
+  font-family: var(--duke-font-serif);
+  color: var(--duke-navy);
+  margin: 1.5em 0 0.5em;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.duke h1 { font-size: 2.5rem; border-bottom: 4px solid var(--duke-accent); padding-bottom: 0.4rem; }
+.duke h2 { font-size: 1.85rem; }
+.duke h3 { font-size: 1.35rem; color: var(--duke-magnolia); }
+.duke h4 {
+  font-family: var(--duke-font-sans);
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--duke-accent-text);
+  margin: 1.5em 0 0.4em;
+}
+
+.duke p { margin: 0 0 1rem; }
+.duke .duke-lead { font-size: 1.2rem; color: var(--duke-graphite); line-height: 1.55; }
+
+/* ---------- Links ---------- */
+.duke a {
+  color: var(--duke-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  transition: color .15s ease;
+}
+.duke a:hover, .duke a:focus { color: var(--duke-link-hover); }
+
+/* ---------- Wordmark / header ----------
+   Lockup geometry follows Duke's sub-branding spec sheets, where x = width of the
+   capital D and y = height of the wordmark: separator is y tall and 0.02x thick with
+   0.33x of space either side; unit name is Open Sans Semi-Bold caps, wide-tracked.
+   Sized for assets/logos/tight/*.svg, which carry exactly 0.5x clear space, so at
+   3.5rem tall the D is about 26px (minimum is 24px). Do not go below 3.25rem. */
+.duke-header {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;                      /* 0.33x */
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--duke-border);
+}
+.duke-wordmark-img {
+  height: 3.5rem; width: auto; display: block;
+  margin: 0 -0.87rem 0 -0.87rem;     /* cancel built-in side padding inside the lockup */
+}
+/* Text placeholder, only for when no official file is available. */
+.duke-wordmark {
+  font-family: "EB Garamond", Georgia, serif;
+  font-weight: 500;
+  font-size: 2rem;
+  letter-spacing: 0.02em;
+  color: var(--duke-navy);
+  line-height: 1;
+}
+.duke-lockup-divider { width: 1px; height: 1.75rem; background: var(--duke-navy); flex: none; }
+.duke-unit {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.27;
+  color: var(--duke-navy);
+}
+/* Prepositions and articles: Regular Italic, lower case, normal tracking. */
+.duke-unit em { font-weight: 400; font-style: italic; text-transform: none; letter-spacing: 0; }
+/* Two-line names (official designs E to G): each cap height is 0.36y. */
+.duke-unit.is-two-line { font-size: 0.875rem; }
+/* Official alternative (designs B, D): Regular weight, initial caps, normal tracking. */
+.duke-unit.is-initial-caps { font-weight: 400; text-transform: none; letter-spacing: 0; font-size: 1.5rem; line-height: 1; }
+/* Official alternative (designs C, D): unit name in a contrasting colour, and then NO divider. */
+.duke-unit.is-contrast { color: var(--duke-accent-text); }
+/* Web-only extension, not one of Duke's seven lockup designs: parent unit on a small second line. */
+.duke-unit .duke-unit-parent { display: block; font-size: 0.72rem; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--duke-graphite); }
+/* A group's own logo: same row, pushed to the far side, never joined to the wordmark. */
+.duke-group-logo { height: 3.5rem; width: auto; display: block; margin-left: auto; }
+
+/* ---------- Band header: the pattern nearly every Duke site uses ----------
+   Full-width solid blue, reversed wordmark (duke_wordmark_white), lockup. Give the
+   unit name class "is-gold" for the OIT / HR look (then delete the divider span). */
+.duke-band {
+  display: flex; align-items: center; gap: 0.55rem;
+  background: var(--duke-base); color: #fff;
+  margin: -2rem -1.25rem 2rem; padding: 0.6rem 1.25rem;
+}
+.duke-band .duke-unit { color: #fff; }
+.duke-band .duke-unit.is-gold { color: var(--duke-accent-on-base); margin-left: 0.3rem; }
+.duke-band .duke-lockup-divider { background: #fff; }
+.duke-band .duke-group-logo { margin-left: auto; }
+
+/* Short gold rule under a heading. Decoration only: Dandelion is never text on white. */
+.duke .duke-heading-rule { border-bottom: 0; padding-bottom: 0; }
+.duke .duke-heading-rule::after {
+  content: ""; display: block; width: 4.5rem; height: 3px; margin-top: 0.6rem;
+  background: var(--duke-dandelion);
+}
+/* Small caps label above a section. */
+.duke-eyebrow {
+  font-family: var(--duke-font-sans); font-size: 0.8rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: var(--duke-accent-text); margin: 0 0 0.3rem;
+}
+/* Solid blue panel for a headline beside or overlapping a photo. */
+.duke-panel { background: var(--duke-base); color: #fff; padding: 1.75rem 2rem; }
+.duke-panel h2, .duke-panel h3 { color: #fff; margin-top: 0; }
+.duke-panel a { color: #fff; }
+
+/* ---------- Callouts ---------- */
+.duke-callout {
+  border-left: 4px solid var(--duke-accent);
+  background: var(--duke-bg-warm);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 var(--duke-radius) var(--duke-radius) 0;
+}
+.duke-callout.is-info    { border-color: var(--duke-prussian); background: var(--duke-hatteras); }
+.duke-callout.is-success { border-color: var(--duke-magnolia); background: var(--duke-whisper); }
+.duke-callout.is-warn    { border-color: var(--duke-persimmon); background: var(--duke-ginger-beer); }
+.duke-callout.is-navy    { border-color: var(--duke-navy); background: var(--duke-hatteras); }
+.duke-callout .duke-callout-title {
+  font-family: var(--duke-font-sans);
+  font-weight: 700;
+  color: var(--duke-cast-iron);
+  margin: 0 0 0.35rem;
+}
+
+/* ---------- Pull-quote ---------- */
+.duke-quote {
+  font-family: var(--duke-font-serif);
+  font-style: italic;
+  font-size: 1.4rem;
+  line-height: 1.4;
+  color: var(--duke-magnolia);
+  border-left: 4px solid var(--duke-accent-2);
+  padding: 0.5rem 1.25rem;
+  margin: 2rem 0;
+}
+.duke-quote cite {
+  display: block;
+  font-family: var(--duke-font-sans);
+  font-style: normal;
+  font-size: 0.9rem;
+  color: var(--duke-graphite);
+  margin-top: 0.5rem;
+}
+
+/* ---------- Buttons ---------- */
+.duke-btn {
+  display: inline-block;
+  font-family: var(--duke-font-sans);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  padding: 0.7rem 1.4rem;
+  background: var(--duke-accent);
+  color: var(--duke-on-accent) !important;
+  text-decoration: none !important;
+  border-radius: var(--duke-radius);
+  border: 2px solid var(--duke-accent);
+  transition: filter .15s ease, background .15s ease;
+}
+.duke-btn:hover, .duke-btn:focus { filter: brightness(0.85); }
+.duke-btn.is-navy    { background: var(--duke-navy);  border-color: var(--duke-navy); color: #fff !important; }
+.duke-btn.is-ghost {
+  background: transparent;
+  color: var(--duke-navy) !important;
+  border-color: var(--duke-navy);
+}
+.duke-btn.is-ghost:hover { background: var(--duke-navy); color: #fff !important; filter: none; }
+/* Caps link-button with a trailing arrow, as on hr / oit / sanford.duke.edu. */
+.duke-btn.is-arrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; border-width: 1px; }
+.duke-btn.is-arrow::after { content: " \2192"; }
+
+/* ---------- Tables ---------- */
+.duke table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
+}
+.duke th {
+  background: var(--duke-navy);
+  color: #fff;
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  font-family: var(--duke-font-sans);
+  font-weight: 600;
+}
+.duke td {
+  padding: 0.55rem 0.8rem;
+  border-bottom: 1px solid var(--duke-border);
+  vertical-align: top;
+}
+.duke tr:nth-child(even) td { background: var(--duke-whisper); }
+
+/* ---------- Lists ---------- */
+.duke ul, .duke ol { padding-left: 1.4rem; margin: 0 0 1rem; }
+.duke li { margin: 0.25rem 0; }
+.duke ul.duke-checklist { list-style: none; padding-left: 0; }
+.duke ul.duke-checklist li {
+  padding-left: 1.6rem;
+  position: relative;
+}
+.duke ul.duke-checklist li::before {
+  content: "✓";
+  position: absolute; left: 0;
+  color: var(--duke-piedmont);
+  font-weight: 700;
+}
+
+/* ---------- Cards / grid ---------- */
+.duke-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+.duke-card {
+  background: #fff;
+  border: 1px solid var(--duke-border);
+  border-top: 4px solid var(--duke-accent);
+  border-radius: var(--duke-radius);
+  padding: 1rem 1.1rem 1.2rem;
+  box-shadow: var(--duke-shadow);
+}
+.duke-card h3 { margin-top: 0; font-size: 1.15rem; color: var(--duke-navy); }
+.duke-card.is-copper   { border-top-color: var(--duke-copper); }
+.duke-card.is-eno      { border-top-color: var(--duke-eno); }
+.duke-card.is-magnolia { border-top-color: var(--duke-magnolia); }
+.duke-card.is-piedmont { border-top-color: var(--duke-piedmont); }
+.duke-card.is-ironweed { border-top-color: var(--duke-ironweed); }
+
+/* ---------- Badge / tag ---------- */
+.duke-badge {
+  display: inline-block;
+  font-family: var(--duke-font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--duke-hatteras);
+  color: var(--duke-navy);
+}
+.duke-badge.is-copper { background: var(--duke-copper);    color: #fff; }
+.duke-badge.is-eno    { background: var(--duke-eno);       color: #fff; }
+.duke-badge.is-navy   { background: var(--duke-navy);      color: #fff; }
+.duke-badge.is-warn   { background: var(--duke-dandelion); color: var(--duke-cast-iron); }
+
+/* ---------- Divider ---------- */
+.duke hr.duke-rule {
+  border: 0;
+  height: 3px;
+  background: var(--duke-accent);   /* solid: Duke's blues are never faded, so no gradients */
+  margin: 2.5rem 0;
+}
+
+/* ---------- Code ---------- */
+.duke code, .duke pre {
+  font-family: var(--duke-font-mono);
+  font-size: 0.92em;
+}
+.duke code {
+  background: var(--duke-whisper);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  color: var(--duke-magnolia);
+}
+.duke pre {
+  background: var(--duke-cast-iron);
+  color: var(--duke-ginger-beer);
+  padding: 1rem 1.2rem;
+  border-radius: var(--duke-radius);
+  overflow-x: auto;
+  line-height: 1.5;
+}
+.duke pre code { background: transparent; color: inherit; padding: 0; }
+
+/* ---------- Footer ---------- */
+.duke-footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--duke-border);
+  font-size: 0.85rem;
+  color: var(--duke-graphite);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 620px) {
+  .duke h1 { font-size: 2rem; }
+  .duke h2 { font-size: 1.5rem; }
+  .duke { padding: 1.25rem 1rem 3rem; }
+}
+
+/* Office of Information Technology - alternate theme. Paste AFTER duke-alternate.css. */
+:root {
+  --duke-accent:      #FFD960;
+  --duke-accent-2:    #0577B1;
+  --duke-accent-text: #012169;
+  --duke-base:        #012169;
+  --duke-accent-on-base: #FFD960;
+  --duke-highlight:   #C84E00;
+  --duke-on-accent:   #262626;
+  --duke-bg-warm:     #FCF7E5;
+  --duke-link:        #005587;
+  --duke-link-hover:  #012169;
+  --duke-font-serif:  'Merriweather', Georgia, 'Times New Roman', Times, serif;
+  --duke-font-sans:   'Open Sans', 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
+}
+.duke { max-width: 1040px; } .hero { display: flex; align-items: stretch; margin: 0 0 2.5rem; }
+.hero .photo { flex: 1.3; min-height: 260px; background: var(--duke-hatteras); display: flex; align-items: center; justify-content: center; color: var(--duke-graphite); font-size: .85rem; }
+.hero .duke-panel { flex: 1; margin: 2rem 0 -1.5rem -3rem; }
+</style></head><body style="margin:0"><div class="duke">
+<header class="duke-band"><img class="duke-wordmark-img" src="../../logos/tight/duke_wordmark_white.svg" alt="Duke"><span class="duke-unit is-two-line is-gold">Office <em>of</em><br>Information Technology</span></header>
+<div class="hero"><div class="photo">[ real Duke photo: people first, natural light ]</div>
+<div class="duke-panel"><p class="duke-eyebrow" style="color:var(--duke-dandelion)">Research computing</p><h2>Bring your analysis to the cluster.</h2>
+<p>Request an allocation, get onboarded in a week, and keep your data where policy says it belongs.</p>
+<a class="duke-btn is-arrow" style="background:transparent;border-color:#fff;color:#fff !important" href="#">Request an allocation</a></div></div>
+<h1 class="duke-heading-rule">Getting started</h1>
+<p class="duke-lead">Three steps take most research groups from first question to first job.</p>
+<div class="duke-cards"><div class="duke-card"><p class="duke-eyebrow">Step 1</p><h3>Tell us about the work</h3><p>Data size, sensitivity and software. Ten minutes.</p></div>
+<div class="duke-card is-eno"><p class="duke-eyebrow">Step 2</p><h3>Get your allocation</h3><p>Most requests are approved within three working days.</p></div>
+<div class="duke-card is-magnolia"><p class="duke-eyebrow">Step 3</p><h3>Run your first job</h3><p>Office hours every Tuesday, in person and on Zoom.</p></div></div>
+<div class="duke-callout"><p class="duke-callout-title">Working with sensitive data?</p><p>Tell us before you upload. We will place the project on a protected partition.</p></div>
+<p><a class="duke-btn" href="#">Request an allocation</a> <a class="duke-btn is-ghost is-arrow" href="#">Read the guide</a></p>
+<footer class="duke-footer"><p>Office of Information Technology · Duke University</p></footer></div></body></html>

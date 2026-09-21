@@ -1,0 +1,71 @@
+{
+  "_source": "https://brand.duke.edu/colors/ and https://brand.duke.edu/typography/",
+  "palette": {
+    "navy":        "#012169",
+    "royal":       "#00539B",
+    "copper":      "#C84E00",
+    "persimmon":   "#E89923",
+    "dandelion":   "#FFD960",
+    "piedmont":    "#A1B70D",
+    "eno":         "#339898",
+    "magnolia":    "#1D6363",
+    "prussian":    "#005587",
+    "shale":       "#0577B1",
+    "ironweed":    "#993399",
+    "hatteras":    "#E2E6ED",
+    "whisper":     "#F3F2F1",
+    "ginger-beer": "#FCF7E5",
+    "dogwood":     "#988675",
+    "shackleford": "#DAD0C6",
+    "cast-iron":   "#262626",
+    "graphite":    "#666666",
+    "granite":     "#B5B5B5",
+    "limestone":   "#E5E5E5",
+    "white":       "#FFFFFF"
+  },
+  "themes": {
+    "alternate": {
+      "description": "Default. Navy base with bold extended-palette accents.",
+      "base": "navy",
+      "accent": "copper",
+      "accent_2": "eno",
+      "highlight": "persimmon",
+      "text": "cast-iron",
+      "text_muted": "graphite",
+      "background": "white",
+      "background_alt": "whisper",
+      "background_warm": "ginger-beer",
+      "border": "limestone",
+      "link": "prussian",
+      "heading_font": "Playfair Display",
+      "body_font": "Open Sans"
+    },
+    "primary": {
+      "description": "Classic. Navy and Royal blue with neutrals only.",
+      "base": "navy",
+      "accent": "royal",
+      "accent_2": "prussian",
+      "highlight": "shale",
+      "text": "cast-iron",
+      "text_muted": "graphite",
+      "background": "white",
+      "background_alt": "whisper",
+      "background_warm": "hatteras",
+      "border": "limestone",
+      "link": "prussian",
+      "heading_font": "EB Garamond",
+      "body_font": "Open Sans"
+    }
+  },
+  "fonts": {
+    "EB Garamond":        { "role": "serif headlines, subheads, body", "fallback": "Garamond, Georgia, 'Times New Roman', Times, serif", "office_fallback": "Georgia" },
+    "Open Sans":          { "role": "sans body and headlines",          "fallback": "'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif", "office_fallback": "Arial" },
+    "Roboto":             { "role": "dense sans for web and digital",    "fallback": "'Helvetica Neue', Helvetica, Arial, sans-serif", "office_fallback": "Arial" },
+    "Georgia":            { "role": "system serif for email and legacy", "fallback": "'Times New Roman', Times, serif", "office_fallback": "Georgia" },
+    "Montserrat":         { "role": "display and headline sans",         "fallback": "'Helvetica Neue', Helvetica, Arial, sans-serif", "office_fallback": "Arial" },
+    "Merriweather":       { "role": "screen-friendly serif body",        "fallback": "Georgia, 'Times New Roman', Times, serif", "office_fallback": "Georgia" },
+    "Cormorant Garamond": { "role": "large display and pull quotes only", "fallback": "Garamond, Georgia, 'Times New Roman', Times, serif", "office_fallback": "Georgia" },
+    "Playfair Display":   { "role": "headlines and large blockquotes only", "fallback": "Garamond, Georgia, 'Times New Roman', Times, serif", "office_fallback": "Georgia" },
+    "Roboto Mono":        { "role": "code, statistics, tabular data",    "fallback": "Menlo, Consolas, monospace", "office_fallback": "Consolas" }
+  }
+}

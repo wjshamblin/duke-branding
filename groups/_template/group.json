@@ -1,0 +1,37 @@
+{
+  "_how_to": "Copy this folder to groups/<slug>/, fill in what applies, delete the rest. Empty values inherit from the parent, then from the Duke theme. Drop logo files next to this file. base is 'navy' (default) or 'royal'. lockup.style is 'caps' (default) or 'initial-caps'; lockup.color is a palette name for a contrasting unit name (then no separator is drawn).",
+  "name": "Full official unit name",
+  "short_name": "Short name for tight spaces",
+  "parent": null,
+  "lockup": {
+    "lines": [
+      "Unit Name"
+    ],
+    "orientation": "horizontal",
+    "style": "",
+    "color": ""
+  },
+  "logo": {
+    "primary": "",
+    "reversed": "",
+    "symbol": ""
+  },
+  "theme": "alternate",
+  "accent": "",
+  "accent_2": "",
+  "highlight": "",
+  "fonts": {
+    "heading": "",
+    "body": ""
+  },
+  "url": "",
+  "footer": "",
+  "contact": {
+    "email": "",
+    "phone": "",
+    "address": ""
+  },
+  "brand_guide_url": "",
+  "notes": "",
+  "base": ""
+}

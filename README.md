@@ -1,93 +1,313 @@
-# duke-branding
+# duke-branding: an Agent Skill, and a worked example of how skills work
 
+This repository is an [Agent Skill](https://agentskills.io): a folder in an open format that
+any supporting AI agent can load (Claude, ChatGPT, Codex, Cursor, GitHub Copilot, Gemini CLI
+and others). It applies Duke University's brand identity to anything the agent produces: slide
+decks, Word documents, PDFs, web and Canvas pages, email, social graphics, video cards.
+It can also layer a specific group's branding (Trinity, Computer Science, HR, ...)
+on top of Duke's.
 
+It is also meant to be read. The sections below use it to show how a skill is put
+together and what happens when one runs.
 
-## Getting started
+## Install
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+This repository **is** the skill: `SKILL.md` sits at the root. Installing it means putting
+this folder where your agent looks for skills. Cloning is best, because then updating is
+one command.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+| Agent | Where skills live | Install |
+|---|---|---|
+| Claude Code | `~/.claude/skills/` (you) or `.claude/skills/` (one project) | `git clone <this repo> ~/.claude/skills/duke-branding` |
+| Codex CLI, ChatGPT desktop app | `~/.agents/skills/` (you) or `.agents/skills/` (one project) | `git clone <this repo> ~/.agents/skills/duke-branding` |
+| ChatGPT on the web | Your workspace, under Plugins > Skills | Upload a zip: Create > Upload from your computer |
+| Claude on the web and desktop | Your account, under Customize > Skills | Upload a zip: + > Create skill > Upload a skill |
+| Other agents | See the agent's documentation | Copy or clone the folder |
 
-## Add your files
+One clone can serve several agents on one machine: clone once, then symlink it into each
+agent's skills folder (Codex documents that it follows symlinks).
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+To make a zip for upload, leave out git data and the evaluation files:
+
+```bash
+cd .. && zip -r duke-branding.zip duke-branding -x "*/.git/*" "*/evals/*" "*/NOTES.md" "*.DS_Store"
+```
+
+After installing, add the official wordmark files, which this repository cannot carry (see
+[Official Duke assets](#official-duke-assets)). ChatGPT for Education is on the list of
+plans that support skills, and a workspace admin decides who may upload them.
+
+Nothing in the skill assumes a particular agent. The frontmatter follows the
+[specification](https://agentskills.io/specification) and passes its reference validator
+(`uvx --from skills-ref agentskills validate "$PWD"`; the folder must be named `duke-branding`, as the standard requires the folder and skill names to match). The scripts are plain Python 3 with no dependencies, and
+`SKILL.md` says what to do by hand where an agent cannot run them.
+
+## Keeping it up to date
+
+Which copy are you running? `SKILL.md` carries a `version` in its frontmatter metadata.
+Compare it with the one in this repository.
+
+How an update reaches you depends on how the skill was installed. Checked against each
+vendor's documentation in September 2026; these products change quickly, so re-check.
+
+| Installed as | How it updates | Automatic? |
+|---|---|---|
+| A git clone in a skills folder (Claude Code, Codex, ChatGPT desktop) | `git pull` in the folder. Codex picks up changes by itself, and Claude Code reloads a changed `SKILL.md` | One command. Put it in a scheduled job if you want it hands-off |
+| A Claude Code plugin from a marketplace | The marketplace refreshes and the plugin follows. Any git host works, including GitLab | Yes, once auto-update is switched on for that marketplace (`/plugin` > Marketplaces) |
+| A ChatGPT or Codex plugin from a workspace marketplace | An admin imports a marketplace repository once (Workspace settings > Plugins > Add > Import marketplace). OpenAI then syncs it | **Yes, daily**, plus a Sync now button. If an update is invalid the last working version stays. **github.com repositories only** |
+| Uploaded to Claude (web, desktop) | Upload the new zip again | No, for your own upload |
+| Shared in a Claude Team or Enterprise organization | The owner updates the skill once | Yes. Anthropic's help center says recipients "automatically get the updated version" |
+| Uploaded to a ChatGPT workspace | The owner edits it in the Skills editor, asks ChatGPT to modify it, or uploads a new package | No sync from git. OpenAI's documentation describes workspace skills, local skill folders and plugins as separate paths that do not update each other |
+| Shared or published in a ChatGPT workspace | The owner updates the workspace copy. Admins can see each skill's Updated date, download it, change its owner or delete it | OpenAI's help center does not say whether people who already installed it get the change, so check after updating |
+
+Automatic updating is not a Claude-only feature. Both vendors do it the same way: not for
+a bare skill, but for a **plugin listed in a marketplace**. A plugin is a small wrapper
+(a `plugin.json` and a `skills/` folder) and a marketplace is a JSON catalog in a git
+repository. Claude Code refreshes marketplaces when auto-update is on. ChatGPT syncs an
+imported marketplace every day.
+
+A skill uploaded on its own is different. In ChatGPT, and in Claude on the web, an
+uploaded skill has no link to a git repository, so its owner has to edit or re-upload it.
+
+For a team that wants hands-off updates:
+
+1. Keep each skill in its own repository, like this one. That is the source of truth.
+2. Add one marketplace repository that lists the skills as plugins.
+3. Claude Code users add that marketplace once and switch on auto-update.
+4. For ChatGPT, a workspace admin imports the marketplace. It must be on github.com: OpenAI
+   states that other git hosts are not supported. A repository on GitLab therefore needs a
+   mirror on GitHub, which GitLab can push to automatically.
+
+This repository is not yet packaged as a plugin. Until it is, update by `git pull` or by
+re-uploading.
+
+Two things to remember when updating:
+
+- **Your own groups survive.** Profiles you keep in a project's `.duke-branding/groups/`
+  folder are outside the skill, so an update never touches them. Profiles you added inside
+  the skill's own `groups/` folder are ordinary files: `git pull` keeps them, a fresh
+  upload replaces them.
+- **The wordmark files are not in git.** A clone keeps the ones you added. A fresh upload
+  needs them added to the zip again.
+
+Sources: [Skills in ChatGPT](https://help.openai.com/en/articles/20001066-skills-in-chatgpt),
+[Build skills (OpenAI)](https://learn.chatgpt.com/docs/build-skills),
+[Skill controls (OpenAI)](https://learn.chatgpt.com/docs/enterprise/skills),
+[Use skills in Claude](https://support.claude.com/en/articles/12512180-using-skills-in-claude),
+[Claude Code plugin marketplaces](https://code.claude.com/docs/en/discover-plugins),
+[Importing and syncing plugin marketplaces from GitHub (OpenAI)](https://help.openai.com/en/articles/20001504-importing-and-syncing-plugin-marketplaces-from-github),
+[Plugin management (OpenAI)](https://learn.chatgpt.com/docs/enterprise/plugin-management).
+
+## What a skill is
+
+A folder with a `SKILL.md` and whatever supporting files the task needs. There is no
+code to register and no API. The agent reads the files.
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.oit.duke.edu/ai-tech/skills/duke-branding.git
-git branch -M main
-git push -uf origin main
+duke-branding/       this repository
+├── SKILL.md         Frontmatter (name, description, version) and the workflow
+├── references/      Knowledge, read only when a step needs it
+├── assets/          Files used in the output: CSS, templates, tokens, logos, examples
+├── scripts/         Code that is run rather than read
+├── groups/          This skill's own extension point: one folder per group
+├── evals/           Test prompts and the grader. For maintainers, never loaded by an agent
+├── README.md        This file, for people
+└── NOTES.md         What real use taught, and what changed
 ```
 
-## Integrate with your tools
+`SKILL.md` never mentions `README.md`, `NOTES.md` or `evals/`, so an agent never loads them.
+They cost nothing at run time.
 
-* [Set up project integrations](https://gitlab.oit.duke.edu/ai-tech/skills/duke-branding/-/settings/integrations)
+## Progressive disclosure: what gets loaded, and when
 
-## Collaborate with your team
+The key design idea. A skill can carry far more than fits comfortably in context,
+because almost none of it is loaded until it is needed.
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+```mermaid
+flowchart LR
+    subgraph L1["Level 1: always in context, about 150 words"]
+        A["Frontmatter<br/>name + description"]
+    end
+    subgraph L2["Level 2: loaded when the skill triggers"]
+        B["SKILL.md body<br/>workflow, routing table, core rules"]
+    end
+    subgraph L3["Level 3: loaded or run on demand"]
+        C["references/*.md"]
+        D["assets/*"]
+        E["scripts/duke_brand.py"]
+    end
+    A -->|"request matches the description"| B
+    B -->|"'read X when Y'"| C
+    B -->|"copy into output"| D
+    B -->|"execute, read only stdout"| E
+```
 
-## Test and Deploy
+What this means in practice:
 
-Use the built-in continuous integration in GitLab.
+- **The description is the trigger.** It is the only part the agent sees before deciding
+  to use the skill, so it lists the media, the group names and the phrases a user is
+  likely to say. A vague description means a skill that never fires.
+- **`SKILL.md` is a router, not an encyclopedia.** It says which reference to read
+  for which deliverable. A request for a slide deck never loads the email guidance.
+- **Scripts cost almost nothing.** `duke_brand.py` is about 250 lines, but the agent runs
+  it and reads a few lines of output. It also makes the result deterministic: contrast
+  ratios are computed, not estimated.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+## What happens on a request
 
-***
+"Make a one-page flyer for the Computer Science open house":
 
-# Editing this README
+```mermaid
+sequenceDiagram
+    actor U as User
+    participant C as Agent
+    participant S as SKILL.md
+    participant P as duke_brand.py
+    participant R as references/
+    participant A as assets/
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+    U->>C: "Flyer for the CS open house"
+    Note over C: Description mentions Duke units<br/>and flyers, so the skill triggers
+    C->>S: load body
+    S-->>C: workflow + routing table
+    C->>P: groups
+    P-->>C: computer-science (parent: trinity)
+    C->>P: tokens --group computer-science
+    P-->>C: colors, fonts, footer, lineage, warnings
+    C->>R: read documents.md (flyer = PDF route)
+    C->>R: read group-branding.md (a group is involved)
+    C->>A: duke-alternate.css, logos/tight/*.svg
+    Note over C: Build HTML, render to PDF,<br/>run pre-delivery checks
+    C-->>U: Flyer + what was used + what to replace
+```
 
-## Suggestions for a good README
+## The skill's own workflow
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+```mermaid
+flowchart TD
+    Start([Request for Duke-styled output]) --> M{Which medium?}
+    M --> T{Formal or<br/>institutional?}
+    T -->|yes| TP[theme = primary]
+    T -->|no| TA[theme = alternate]
+    TP --> G{Duke unit named<br/>or implied?}
+    TA --> G
+    G -->|no| R["duke_brand.py tokens"]
+    G -->|yes| L["duke_brand.py groups"]
+    L --> P{Profile exists?}
+    P -->|yes| RG["duke_brand.py tokens --group slug"]
+    P -->|no| O[Text lockup of unit name<br/>+ offer to create a profile]
+    O --> R
+    R --> W{Warnings?}
+    RG --> W
+    W -->|yes| FX[Apply the fix]
+    W -->|no| MG
+    FX --> MG[Read the medium guide]
+    MG --> B[Build with the format's tooling]
+    B --> C{Checks pass?}
+    C -->|no| B
+    C -->|yes| D([Deliver])
+```
 
-## Name
-Choose a self-explaining name for your project.
+## Group branding: layered profiles
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+A group is a `group.json` plus its logo files. `parent` makes a chain, and each layer
+states only what differs from the one before it.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+```mermaid
+flowchart LR
+    D["Duke theme<br/><i>navy base, copper accent,<br/>Playfair + Open Sans</i>"] --> T["trinity<br/><i>base: royal, accent: dandelion<br/>Merriweather + Open Sans</i>"]
+    T --> CS["computer-science<br/><i>lockup: Department of<br/>Computer Science</i>"]
+    CS --> R(["Resolved tokens"])
+    R --> V{Safety checks}
+    V -->|"off-palette color"| W1[warn]
+    V -->|"white text fails on accent"| W2["on_accent := dark text"]
+    V -->|"accent fails on white"| W3["accent_text := navy"]
+    V -->|"logo file missing"| W4["warn: use text lockup"]
+```
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Profiles are looked up in `./.duke-branding/groups/` in the current project first, then
+in the skill's own `groups/`. That lets a project carry its own group without touching
+the installed skill.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+```bash
+python3 scripts/duke_brand.py groups
+python3 scripts/duke_brand.py tokens --group computer-science --format css
+python3 scripts/duke_brand.py contrast copper white     # 4.62:1  AA
+python3 scripts/pptx_tools.py audit deck.pptx            # brand + accessibility audit
+python3 scripts/pptx_tools.py theme deck.pptx --group oit
+```
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+To add a group, copy `groups/_template/`, fill in what applies, and drop
+the logo files beside it. Details: `references/group-branding.md`.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+The four bundled profiles (`trinity`, `computer-science`, `hr`, `oit`) have real names and
+URLs, but their accent colors are editable defaults, not official unit standards, and
+they ship without logo files.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+## Iterating: what the first real use taught
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+The skill was used on a real 25-slide deck the day it was written. It took the deck
+from 28 audit problems to 0, and the skill itself turned out to have one wrong fact,
+no review workflow, and several rules with no mechanism behind them. Each gap became
+a change. [`NOTES.md`](NOTES.md) has the full record and the general lessons.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+```mermaid
+flowchart LR
+    A[Write the skill] --> B[Use it on real work]
+    B --> C{Met expectations?}
+    C -->|gap: wrong fact| D[Verify, then fix the reference]
+    C -->|gap: eyes missed it| E[Turn the check into a script]
+    C -->|gap: rule without a how| F[Document the mechanism]
+    C -->|gap: wrong workflow| G[Add the missing path to SKILL.md]
+    D --> H[Record it in NOTES.md]
+    E --> H
+    F --> H
+    G --> H
+    H --> B
+```
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## See it
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+![Brand showcase: palette, themes, pairings, lockups, groups](assets/showcase/showcase.png)
 
-## License
-For open source projects, say how it is licensed.
+Finished examples, rebuilt from the skill's own templates by `scripts/make_examples.py`:
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+| Web page (OIT) | Canvas page (Computer Science) | Email (HR) |
+|---|---|---|
+| ![](assets/examples/web-page-oit.png) | ![](assets/examples/canvas-page-cs.png) | ![](assets/examples/email-hr.png) |
+
+## Measured, not assumed
+
+Three realistic tasks, each run by a fresh agent with the skill and without it, graded by
+script ([`evals/`](evals/)). Round one: **97% with the skill, 82% without**, with a tie on the
+Canvas page, where the logs showed the skill's guidance was wrong. After fixing it, round
+two: **100% new skill, 93% old skill, 83% no skill.** The caveats matter as much as the
+numbers, and both are in [`NOTES.md`](NOTES.md).
+
+## Design choices worth copying
+
+| Choice | Why |
+|---|---|
+| One reference file per medium | A deck request never pays for email guidance |
+| Palette lives once, in `assets/duke-tokens.json` | The script, and through it every medium, reads the same values |
+| CSS components read semantic variables (`--duke-accent`) | A theme or group is a 13-line override block, not a second stylesheet |
+| The script fixes what it warns about | It emits a safe `on_accent` and `accent_text`, so a bad accent choice still yields accessible output |
+| Sources cited in every reference | Brand rules change. A reader can check them |
+| Working defaults are labelled as such | Where Duke publishes no rule, the file says so rather than inventing authority |
+| Hard limits are stated as limits | Athletics marks, merchandise and partner co-branding route to Trademark Licensing |
+
+## Official Duke assets
+
+The Duke wordmark files and sub-branding spec sheets are registered trademarks
+distributed behind Duke NetID login. They are **excluded from this repo** by
+`.gitignore` and must not be redistributed outside Duke.
+
+To add them after cloning, sign in at https://brand.duke.edu/logos/#downloads,
+download the wordmark zip, and place the digital RGB SVG and PNG files under
+`assets/logos/original/`. Then run
+`python3 scripts/make_tight_logos.py` to build the `tight/` variants
+(same artwork, canvas trimmed to exactly the required clear space). Without these files the skill still
+works and falls back to a labelled placeholder.
+
+All colors, typography and rules come from https://brand.duke.edu/. This project is
+not an official Duke University product.

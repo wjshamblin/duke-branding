@@ -1,0 +1,12 @@
+# Official Duke trademark files: distributed behind Duke NetID login, so not committed.
+# Download them yourself (assets/logos/README.md), then run scripts/make_tight_logos.py
+assets/logos/original/
+assets/logos/tight/
+assets/logos/subbranding-reference/
+# Generated files that embed the official wordmark (the PNG previews are kept)
+assets/showcase/showcase.html
+assets/showcase/showcase.pdf
+
+__pycache__/
+.DS_Store
+*.zip

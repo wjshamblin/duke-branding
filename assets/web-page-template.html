@@ -1,0 +1,100 @@
+<!--
+  Duke-branded template for a STANDALONE web page or dashboard (your own server, GitHub
+  Pages, a static site). It relies on a <style> block, classes and a Google Fonts <link>.
+  NOT for Canvas: Canvas strips <style> and <link>. Use canvas-page-template.html there.
+  Wrap this in a full HTML document with <meta name="viewport"> and a <title>.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Open+Sans:wght@300;400;600;700&family=EB+Garamond:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* --- PASTE CONTENTS OF assets/duke-alternate.css HERE --- */
+
+/* --- For the primary theme or a group: paste the output of
+       scripts/duke_brand.py tokens --group <slug> --format css  HERE --- */
+</style>
+
+<div class="duke">
+
+  <!--
+    Header = Duke sub-brand lockup: wordmark, separator, unit name.
+    - Wordmark: official file from assets/logos/tight/. Canvas cannot load local files:
+      upload the SVG/PNG to the course Files area and use that URL. For a standalone
+      page, inline the file as a data: URI. With no file at all, use
+      <span class="duke-wordmark">Duke</span> and tell the user it is a placeholder.
+    - Unit name renders as semi-bold caps. Wrap prepositions/articles in <em>.
+      Two lines: add class "is-two-line" and a <br>. Contrasting colour: add
+      "is-contrast" and DELETE the divider span.
+    - Group with its own logo: add <img class="duke-group-logo" ...> as the last child.
+  -->
+  <header class="duke-header">
+    <img class="duke-wordmark-img" src="[URL of duke_wordmark_navyblue_012169.svg]" alt="Duke">
+    <span class="duke-lockup-divider"></span>
+    <span class="duke-unit">[Name <em>of the</em> Entity]</span>
+  </header>
+
+  <h1>[PAGE TITLE]</h1>
+  <p class="duke-lead">[One-sentence lead summarizing the page. Sets the tone and tells the reader what they're about to get.]</p>
+
+  <hr class="duke-rule">
+
+  <h2>Overview</h2>
+  <p>[Intro paragraph. Standard body copy in Open Sans. Keep paragraphs short for screen reading.]</p>
+
+  <div class="duke-callout">
+    <p class="duke-callout-title">Heads up</p>
+    <p>Use callouts to flag important context. Variants: <code>is-info</code>, <code>is-success</code>, <code>is-warn</code>, <code>is-navy</code>.</p>
+  </div>
+
+  <h2>Key Concepts</h2>
+  <div class="duke-cards">
+    <div class="duke-card">
+      <h3>Concept One</h3>
+      <p>Short description. Card top-border uses the theme or group accent.</p>
+    </div>
+    <div class="duke-card is-eno">
+      <h3>Concept Two</h3>
+      <p>Variant accent in Eno teal.</p>
+    </div>
+    <div class="duke-card is-piedmont">
+      <h3>Concept Three</h3>
+      <p>Variant accent in Piedmont olive.</p>
+    </div>
+  </div>
+
+  <h2>Quote</h2>
+  <blockquote class="duke-quote">
+    "A pithy quote that reinforces the point."
+    <cite>— Attribution</cite>
+  </blockquote>
+
+  <h2>Action Items</h2>
+  <ul class="duke-checklist">
+    <li>First action item</li>
+    <li>Second action item</li>
+    <li>Third action item</li>
+  </ul>
+
+  <p>
+    <a class="duke-btn" href="#">Primary Action</a>
+    <a class="duke-btn is-ghost" href="#">Secondary</a>
+  </p>
+
+  <h2>Reference Table</h2>
+  <table>
+    <thead>
+      <tr><th>Column A</th><th>Column B</th><th>Column C</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Row 1</td><td>Value</td><td>Value</td></tr>
+      <tr><td>Row 2</td><td>Value</td><td>Value</td></tr>
+    </tbody>
+  </table>
+
+  <footer class="duke-footer">
+    <p>Duke University &middot; [Unit / Course] &middot; Last updated [Date]</p>
+  </footer>
+
+</div>

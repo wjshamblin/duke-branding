@@ -1,0 +1,29 @@
+{
+  "name": "Duke Human Resources",
+  "short_name": "Duke HR",
+  "parent": null,
+  "lockup": {
+    "lines": [
+      "Human Resources"
+    ],
+    "orientation": "horizontal",
+    "style": "initial-caps",
+    "color": "dandelion"
+  },
+  "logo": {
+    "primary": "",
+    "reversed": "",
+    "symbol": ""
+  },
+  "theme": "alternate",
+  "accent": "dandelion",
+  "accent_2": "shale",
+  "url": "https://hr.duke.edu",
+  "footer": "Duke Human Resources · Duke University",
+  "notes": "Navy base, unit name in Dandelion initial caps (lockup design D), Merriweather + Open Sans. Measured from the live site on 2026-09-21 (see references/real-world-patterns.md).",
+  "highlight": "copper",
+  "fonts": {
+    "heading": "Merriweather",
+    "body": "Open Sans"
+  }
+}

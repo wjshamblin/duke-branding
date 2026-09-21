@@ -1,0 +1,29 @@
+{
+  "name": "Trinity College of Arts & Sciences",
+  "short_name": "Trinity",
+  "parent": null,
+  "lockup": {
+    "lines": [
+      "Trinity College of",
+      "Arts & Sciences"
+    ],
+    "orientation": "horizontal"
+  },
+  "logo": {
+    "primary": "",
+    "reversed": "",
+    "symbol": ""
+  },
+  "theme": "alternate",
+  "accent": "dandelion",
+  "accent_2": "prussian",
+  "url": "https://trinity.duke.edu",
+  "footer": "Trinity College of Arts & Sciences · Duke University",
+  "notes": "Royal Blue base, Dandelion accent, Merriweather + Open Sans. Measured from the live site on 2026-09-21 (see references/real-world-patterns.md). No logo files bundled: use the text lockup.",
+  "base": "royal",
+  "highlight": "copper",
+  "fonts": {
+    "heading": "Merriweather",
+    "body": "Open Sans"
+  }
+}
