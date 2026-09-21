@@ -1,0 +1,19 @@
+{
+  "name": "duke-branding",
+  "owner": {
+    "name": "ai-tech/skills",
+    "url": "https://gitlab.oit.duke.edu/ai-tech/skills"
+  },
+  "metadata": {
+    "description": "Duke University brand identity as an agent skill"
+  },
+  "plugins": [
+    {
+      "name": "duke-branding",
+      "source": "./",
+      "description": "Apply Duke University's brand identity (colors, typography, wordmark, accessibility) to decks, documents, web and Canvas pages and email, with per-unit group branding and a .pptx audit.",
+      "category": "design",
+      "keywords": ["duke", "branding", "design", "accessibility", "powerpoint"]
+    }
+  ]
+}
