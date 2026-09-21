@@ -12,35 +12,83 @@ together and what happens when one runs.
 
 ## Install
 
-This repository **is** the skill: `SKILL.md` sits at the root. Installing it means putting
-this folder where your agent looks for skills. Cloning is best, because then updating is
-one command.
+This repository is three things at once, from one set of files:
 
-| Agent | Where skills live | Install |
-|---|---|---|
-| Claude Code | `~/.claude/skills/` (you) or `.claude/skills/` (one project) | `git clone <this repo> ~/.claude/skills/duke-branding` |
-| Codex CLI, ChatGPT desktop app | `~/.agents/skills/` (you) or `.agents/skills/` (one project) | `git clone <this repo> ~/.agents/skills/duke-branding` |
-| ChatGPT on the web | Your workspace, under Plugins > Skills | Upload a zip: Create > Upload from your computer |
-| Claude on the web and desktop | Your account, under Customize > Skills | Upload a zip: + > Create skill > Upload a skill |
-| Other agents | See the agent's documentation | Copy or clone the folder |
+- **a skill**: `SKILL.md` is at the root, so the folder can be dropped into any agent;
+- **a plugin**: `.claude-plugin/plugin.json` declares the root as its one skill;
+- **a marketplace**: `.claude-plugin/marketplace.json` lists that plugin. Claude Code reads
+  this format natively, and OpenAI's workspace import accepts it as "a Claude-compatible
+  marketplace", so one file serves both.
 
-One clone can serve several agents on one machine: clone once, then symlink it into each
-agent's skills folder (Codex documents that it follows symlinks).
+Pick the route that matches how you want updates to arrive.
 
-To make a zip for upload, leave out git data and the evaluation files:
+### Route 1: marketplace (updates arrive by themselves)
 
-```bash
-cd .. && zip -r duke-branding.zip duke-branding -x "*/.git/*" "*/evals/*" "*/NOTES.md" "*.DS_Store"
+**Claude Code.** Add the marketplace once, then install the plugin:
+
+```
+/plugin marketplace add git@gitlab.oit.duke.edu:ai-tech/skills/duke-branding.git
+/plugin install duke-branding@duke-branding
 ```
 
-After installing, add the official wordmark files, which this repository cannot carry (see
-[Official Duke assets](#official-duke-assets)). ChatGPT for Education is on the list of
-plans that support skills, and a workspace admin decides who may upload them.
+Then open `/plugin` > Marketplaces > `duke-branding` and switch on auto-update. Use the SSH
+address as shown: Claude Code's background update check cannot sign in to a private
+repository over HTTPS, but SSH works when your key is loaded. The GitHub mirror works too:
+`/plugin marketplace add wjshamblin/duke-branding`. Tested from both with the `claude` CLI.
+
+**ChatGPT (Enterprise, Edu, Business workspaces).** A workspace admin does this once:
+
+1. Workspace settings > Plugins > Add > Import marketplace.
+2. Source: `https://github.com/wjshamblin/duke-branding`. Leave Path and Branch empty.
+3. Authorize GitHub with an account that can read the repository (it is private).
+4. Review the import results, then set the plugin's installation policy: Available, or
+   Installed for the roles that should have it.
+
+OpenAI then syncs the marketplace daily, and Sync now forces it. OpenAI's import reads
+github.com only, which is why the GitHub mirror exists. **Not yet tested**: the file format
+follows OpenAI's documentation, but nobody has run this import. If it rejects the root
+layout, the fallback is Route 3.
+
+### Route 2: clone into a skills folder (update with `git pull`)
+
+| Agent | Install |
+|---|---|
+| Claude Code | `git clone git@gitlab.oit.duke.edu:ai-tech/skills/duke-branding.git ~/.claude/skills/duke-branding` |
+| Codex CLI, ChatGPT desktop app | the same clone, into `~/.agents/skills/duke-branding` |
+| One project only | the same clone, into `.claude/skills/` or `.agents/skills/` inside the project |
+
+One clone can serve several agents: clone once, then symlink it into each agent's skills
+folder (Codex documents that it follows symlinks). Keep the folder named `duke-branding`.
+
+### Route 3: upload a zip (update by uploading again)
+
+For ChatGPT on the web (Plugins > Skills > Create > Upload from your computer) and Claude on
+the web or desktop (Customize > Skills > + > Create skill > Upload a skill):
+
+```bash
+cd .. && zip -r duke-branding.zip duke-branding -x "*/.git/*" "*/.claude-plugin/*" "*/evals/*" "*/NOTES.md" "*.DS_Store"
+```
+
+### Whichever route: the wordmark files
+
+The official Duke wordmark files are not in git (see
+[Official Duke assets](#official-duke-assets)), so:
+
+| Route | Wordmarks |
+|---|---|
+| 1, marketplace | **Not included, and cannot be added durably**: the agent replaces its copy on every update. The skill still works, and uses a labelled placeholder plus the download link |
+| 2, clone | Add them once to `assets/logos/`. `git pull` leaves them alone |
+| 3, zip | Include them in the zip you build, and keep that zip inside Duke |
+
+If the wordmark matters for your work, use Route 2. Install by one route only: a plugin
+and a folder copy of the same skill both load, and the agent sees it twice.
 
 Nothing in the skill assumes a particular agent. The frontmatter follows the
 [specification](https://agentskills.io/specification) and passes its reference validator
-(`uvx --from skills-ref agentskills validate "$PWD"`; the folder must be named `duke-branding`, as the standard requires the folder and skill names to match). The scripts are plain Python 3 with no dependencies, and
-`SKILL.md` says what to do by hand where an agent cannot run them.
+(`uvx --from skills-ref agentskills validate "$PWD"`; the folder must be named
+`duke-branding`, as the standard requires the folder and skill names to match). The scripts
+are plain Python 3 with no dependencies, and `SKILL.md` says what to do by hand where an
+agent cannot run them.
 
 ## Keeping it up to date
 
@@ -53,8 +101,8 @@ vendor's documentation in September 2026; these products change quickly, so re-c
 | Installed as | How it updates | Automatic? |
 |---|---|---|
 | A git clone in a skills folder (Claude Code, Codex, ChatGPT desktop) | `git pull` in the folder. Codex picks up changes by itself, and Claude Code reloads a changed `SKILL.md` | One command. Put it in a scheduled job if you want it hands-off |
-| A Claude Code plugin from a marketplace | The marketplace refreshes and the plugin follows. Any git host works, including GitLab | Yes, once auto-update is switched on for that marketplace (`/plugin` > Marketplaces) |
-| A ChatGPT or Codex plugin from a workspace marketplace | An admin imports a marketplace repository once (Workspace settings > Plugins > Add > Import marketplace). OpenAI then syncs it | **Yes, daily**, plus a Sync now button. If an update is invalid the last working version stays. **github.com repositories only** |
+| A Claude Code plugin from a marketplace (Route 1) | The marketplace refreshes and the plugin follows. Any git host works, including GitLab | Yes, once auto-update is switched on for that marketplace (`/plugin` > Marketplaces) |
+| A ChatGPT or Codex plugin from a workspace marketplace (Route 1) | An admin imports a marketplace repository once (Workspace settings > Plugins > Add > Import marketplace). OpenAI then syncs it | **Yes, daily**, plus a Sync now button. If an update is invalid the last working version stays. **github.com repositories only** |
 | Uploaded to Claude (web, desktop) | Upload the new zip again | No, for your own upload |
 | Shared in a Claude Team or Enterprise organization | The owner updates the skill once | Yes. Anthropic's help center says recipients "automatically get the updated version" |
 | Uploaded to a ChatGPT workspace | The owner edits it in the Skills editor, asks ChatGPT to modify it, or uploads a new package | No sync from git. OpenAI's documentation describes workspace skills, local skill folders and plugins as separate paths that do not update each other |
@@ -78,8 +126,25 @@ For a team that wants hands-off updates:
    states that other git hosts are not supported. A repository on GitLab therefore needs a
    mirror on GitHub, which GitLab can push to automatically.
 
-This repository is not yet packaged as a plugin. Until it is, update by `git pull` or by
-re-uploading.
+This repository is packaged that way already: see Route 1 under [Install](#install).
+
+**How a change reaches users.** The plugin declares no `version`, on purpose. Claude Code
+then uses the git commit as the version, so every push to `main` is an update and there is
+no release step to forget. (With a version set, users only update when someone remembers
+to change it.) The `version` in `SKILL.md` is for people, so bump it when the change is
+worth announcing.
+
+**For maintainers.** GitLab is the source of truth and GitHub is a mirror. In the
+maintainer's clone, `origin` has two push addresses, so one `git push` updates both:
+
+```bash
+git remote set-url --add --push origin git@gitlab.oit.duke.edu:ai-tech/skills/duke-branding.git
+git remote set-url --add --push origin git@github.com:wjshamblin/duke-branding.git
+```
+
+With several contributors, replace that with GitLab's own push mirroring (Settings >
+Repository > Mirroring repositories), so the mirror follows GitLab whoever pushes. After
+changing the manifests, run `claude plugin validate .`.
 
 Two things to remember when updating:
 
@@ -111,6 +176,7 @@ duke-branding/       this repository
 ├── scripts/         Code that is run rather than read
 ├── groups/          This skill's own extension point: one folder per group
 ├── evals/           Test prompts and the grader. For maintainers, never loaded by an agent
+├── .claude-plugin/  plugin.json and marketplace.json, for marketplace installs
 ├── README.md        This file, for people
 └── NOTES.md         What real use taught, and what changed
 ```

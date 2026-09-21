@@ -168,6 +168,28 @@ rule, and no broken logo. Runs took about six minutes, against twelve in round o
 A python-pptx helper library. Both rounds' deck agents wrote their own text, shape,
 lockup and footer helpers from scratch. That is the clearest remaining signal.
 
+## 2026-09-21 (evening): packaging for automatic updates
+
+Question: can a skill keep itself current, in ChatGPT as well as Claude? Answer: yes in
+both, but only for a **plugin listed in a marketplace**, never for a bare uploaded skill.
+
+- Claude Code's documentation states that a plugin with `SKILL.md` at its root is loaded
+  as a single-skill plugin, so this repository needed no restructuring: two small files in
+  `.claude-plugin/` made it a plugin and a one-plugin marketplace.
+- OpenAI's workspace import lists `.claude-plugin/marketplace.json` among its supported
+  formats, so the same file serves both vendors. It reads github.com only, hence a private
+  GitHub mirror of the GitLab repository.
+- No `version` in the plugin manifest, deliberately: the commit becomes the version, so
+  every push is an update and nobody has to remember a release step.
+- **Tested:** `claude plugin validate`, then marketplace add and plugin install from the
+  local folder, from GitLab over SSH and from the GitHub mirror, each in a throwaway config
+  folder. **Not tested:** the ChatGPT workspace import, which needs a workspace admin.
+- **The catch:** a marketplace install comes from git, and the official wordmark files are
+  not in git. Installing from a local folder hid this, because it copied them. Installing
+  from the remotes showed zero wordmark files. The README now says which install route
+  keeps the wordmarks. A durable fix would be a wordmark folder outside the skill, the way
+  group profiles already have one.
+
 ### General lessons for writing skills
 
 1. **Use it on real work the same day.** Every gap above was invisible until then.
