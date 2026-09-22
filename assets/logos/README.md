@@ -2,12 +2,13 @@
 
 **If this README is the only thing in this folder, that is expected, not an error.** This
 copy of the skill came from git (a marketplace or clone install), and the wordmark files
-are not in git because they are Duke trademarks distributed behind NetID login. Do not
-search elsewhere on the machine for them. Look only for a file the user attached, or in a
-folder the user connected to the session, or use a labelled placeholder and tell the user
-in the first line of the reply. To restore this folder in a clone: sign in at
-https://brand.duke.edu/logos/#downloads, unzip the digital RGB SVG and PNG files into
-`original/`, and run `python3 scripts/make_tight_logos.py`.
+are not in git because they are Duke trademarks distributed behind NetID login. The skill
+also looks in `./.duke-branding/logos` and `~/.duke-branding/logos`, which survive updates:
+`python3 scripts/duke_brand.py logos` prints the folder in use. To set that folder up once
+on a machine, download the official zip (sign in at https://brand.duke.edu/logos/#downloads)
+and run `python3 scripts/install_wordmarks.py ~/Downloads/duke_wordmark.zip`. Failing all
+that, use a file the user attached or connected, or a labelled placeholder, and say so in
+the first line of the reply. Never search the rest of the machine for the files.
 
 Downloaded from https://brand.duke.edu/logos/#downloads (Duke NetID required).
 These are registered trademarks of Duke University. **Do not redistribute this

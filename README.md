@@ -76,7 +76,7 @@ The official Duke wordmark files are not in git (see
 
 | Route | Wordmarks |
 |---|---|
-| 1, marketplace | **Not included, and cannot be added durably**: the agent replaces its copy on every update. Keep the files in a folder of your own and connect it to the session (Cowork: Add folder), or attach the file when asked. Otherwise the skill uses a labelled placeholder plus the download link |
+| 1, marketplace | Not in the plugin, and the plugin folder is replaced on every update. Instead, install them **once, outside the skill**: download the official zip (NetID) and run `python3 scripts/install_wordmarks.py ~/Downloads/duke_wordmark.zip`, which writes them to `~/.duke-branding/logos/`. Every copy of the skill on that machine looks there. In Claude Desktop, which runs the skill in a sandbox, connect that folder to the session (Cowork: Add folder) or attach the file when asked |
 | 2, clone | Add them once to `assets/logos/`. `git pull` leaves them alone |
 | 3, zip | Include them in the zip you build, and keep that zip inside Duke |
 
@@ -148,7 +148,7 @@ changing the manifests, run `claude plugin validate .`.
 
 Two things to remember when updating:
 
-- **Your own groups survive.** Profiles you keep in a project's `.duke-branding/groups/`
+- **Wordmarks and your own groups survive.** Wordmarks in `~/.duke-branding/logos/` and profiles you keep in a project's `.duke-branding/groups/`
   folder are outside the skill, so an update never touches them. Profiles you added inside
   the skill's own `groups/` folder are ordinary files: `git pull` keeps them, a fresh
   upload replaces them.

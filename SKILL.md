@@ -26,7 +26,8 @@ duke-branding/
 │   ├── pptx_tools.py              Audit a .pptx against the rules; write the Duke theme into one
 │   ├── make_showcase.py           Rebuild assets/showcase/ (run after editing a group)
 │   ├── make_examples.py           Rebuild assets/examples/ from the templates
-│   └── make_tight_logos.py        Rebuild assets/logos/tight/ from original/ (setup only)
+│   ├── make_tight_logos.py        Rebuild assets/logos/tight/ from original/ (setup only)
+│   └── install_wordmarks.py       One-time: put the official wordmarks in ~/.duke-branding/logos/
 ├── references/
 │   ├── brand-resources.md         Every official URL: wordmark, fonts, palette, templates
 │   ├── colors.md                  Primary + extended palette (HEX/RGB/CMYK/PMS), themes, AA ratings
