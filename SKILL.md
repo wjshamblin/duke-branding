@@ -193,7 +193,7 @@ official asset, template or link.
 ```mermaid
 flowchart TD
     A{"Group logo already<br/>contains the Duke wordmark?"} -->|yes| B[Use the group logo alone]
-    A -->|no| C{"THIS skill folder's<br/>assets/logos/tight/<br/>has files?"}
+    A -->|no| C{"duke_brand.py logos<br/>finds a folder?<br/>(./ or ~/.duke-branding/logos,<br/>or the skill's own tight/)"}
     C -->|no| U{"User attached or<br/>has a wordmark file?"}
     U -->|yes| E
     U -->|no| D["Say so FIRST, in one line:<br/>what is missing, the download<br/>link, 'attach it and I will place it'.<br/>Then a labelled placeholder"]
@@ -210,12 +210,12 @@ flowchart TD
 The official wordmark files belong in `assets/logos/tight/`, but a copy of this skill
 may not have them: they are Duke trademarks behind NetID login, so they are not in git,
 and a marketplace install or an early zip arrives without them. So, before building,
-look **inside this skill's own folder**: the directory that contains this SKILL.md,
-wherever the host put it (a sandbox mount such as `/mnt/skills/...`, `~/.claude/skills/`,
-a plugin cache). List its `assets/logos/tight/`. That is the only place to look. Do not
-search the user's home folder, Downloads, or any other folder named `duke-branding`:
-those are not this skill, and asking for access to them wastes the user's time. If the
-folder is empty, check whether the user attached a
+run `python3 scripts/duke_brand.py logos`. It checks, in order, `./.duke-branding/logos`,
+`~/.duke-branding/logos` (the standing folder that survives marketplace updates), and this
+skill's own `assets/logos/tight/`, and prints the first that has files. Without a shell,
+look in those three places by hand and nowhere else: not the user's home folder in
+general, not Downloads, not other folders named `duke-branding`. If none has files, check
+whether the user attached a
 `duke_wordmark*.svg` or `.png`, or has one in the working folder or in a folder they
 connected to the session (a marketplace install never carries the wordmarks, so users
 on that route keep them in a connected folder). Use that file. Only

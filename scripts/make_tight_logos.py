@@ -40,27 +40,24 @@ def find_chrome():
     return None
 
 
-def main():
-    originals = sorted((LOGOS / "original").glob("*.svg"))
-    if not originals:
-        sys.exit(f"error: no SVG files in {LOGOS / 'original'} - download them first (see assets/logos/README.md)")
-    tight = LOGOS / "tight"
-    tight.mkdir(exist_ok=True)
-    chrome = find_chrome()
-
-    for src in originals:
+def build_tight(originals, tight, chrome=None):
+    """Write trimmed SVGs (and PNGs when Chrome is available) for every SVG in `originals`."""
+    tight.mkdir(parents=True, exist_ok=True)
+    written = []
+    for src in sorted(Path(originals).glob("*.svg")):
         key = "duke_university_wordmark" if src.name.startswith("duke_university") else "duke_wordmark"
+        if not src.name.startswith(("duke_wordmark", "duke_university_wordmark")):
+            continue
         x0, y0, x1, y1 = ART[key]
         width, height = (x1 - x0) + 2 * PAD, (y1 - y0) + 2 * PAD
         view_box = f'viewBox="{x0 - PAD:.1f} {y0 - PAD:.1f} {width:.1f} {height:.1f}"'
-
         svg, count = re.subn(r'viewBox="[^"]*"', view_box, src.read_text(), count=1)
         if count != 1:
             sys.exit(f"error: no viewBox found in {src.name}")
         svg = re.sub(r'\s*enable-background="[^"]*"', "", svg, count=1)
-        dst = tight / src.name
+        dst = Path(tight) / src.name
         dst.write_text(svg)
-
+        written.append(dst)
         if chrome:
             w, h = round(width * PNG_SCALE), round(height * PNG_SCALE)
             with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False) as page:
@@ -71,8 +68,17 @@ def main():
                             f"--window-size={w},{h}", f"--screenshot={dst.with_suffix('.png')}",
                             f"file://{page.name}"], capture_output=True, check=False)
             Path(page.name).unlink()
-        print(f"{dst.name}{'  + png' if chrome else ''}")
+            written.append(dst.with_suffix(".png"))
+    return written
 
+
+def main():
+    originals = LOGOS / "original"
+    if not list(originals.glob("*.svg")):
+        sys.exit(f"error: no SVG files in {originals} - download them first (see assets/logos/README.md)")
+    chrome = find_chrome()
+    for path in build_tight(originals, LOGOS / "tight", chrome):
+        print(path.name)
     if not chrome:
         print("note: Chrome not found, so no PNGs were made. SVGs are complete.")
 

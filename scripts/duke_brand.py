@@ -3,6 +3,7 @@
 
 Usage:
   duke_brand.py groups
+  duke_brand.py logos                 (where the official wordmark files are, if anywhere)
   duke_brand.py tokens [--group SLUG] [--theme alternate|primary] [--format json|css]
   duke_brand.py contrast FG BG [FG BG ...]   (palette names such as cast-iron, or hex values)
   duke_brand.py render TEMPLATE [--group SLUG] [--theme ...]   fill {{placeholders}} in an inline-style template
@@ -20,6 +21,9 @@ SKILL_DIR = Path(__file__).resolve().parent.parent
 TOKENS = json.loads((SKILL_DIR / "assets" / "duke-tokens.json").read_text())
 PALETTE = TOKENS["palette"]
 GROUP_DIRS = [Path.cwd() / ".duke-branding" / "groups", SKILL_DIR / "groups"]
+# Wordmarks live outside the skill when the skill was installed from git (no trademarks in git).
+LOGO_DIRS = [Path.cwd() / ".duke-branding" / "logos", Path.home() / ".duke-branding" / "logos",
+             SKILL_DIR / "assets" / "logos" / "tight"]
 COLOR_KEYS = ["base", "accent", "accent_2", "highlight", "text", "text_muted",
               "background", "background_alt", "background_warm", "border", "link"]
 
@@ -93,6 +97,14 @@ def load_group(slug, seen=()):
     return merged
 
 
+def wordmark_dir():
+    """First folder that holds an official wordmark file, or None."""
+    for directory in LOGO_DIRS:
+        if list(directory.glob("duke_wordmark_*.svg")) or list(directory.glob("duke_wordmark_*.png")):
+            return directory
+    return None
+
+
 def resolve(group_slug, theme_name):
     warnings = []
     group = load_group(group_slug) if group_slug else None
@@ -149,7 +161,11 @@ def resolve(group_slug, theme_name):
         fonts[role] = {"family": family, "css_stack": f"'{family}', {info['fallback']}",
                        "office_fallback": info["office_fallback"]}
 
-    return {"theme": theme_name, "colors": colors, "fonts": fonts,
+    logos = wordmark_dir()
+    if logos is None:
+        warnings.append("no official wordmark files found (looked in " + ", ".join(str(d) for d in LOGO_DIRS)
+                        + ") - use a file the user attached or connected, else a labelled placeholder, and say so first")
+    return {"theme": theme_name, "colors": colors, "fonts": fonts, "wordmarks": str(logos) if logos else None,
             "group": group, "warnings": warnings}
 
 
@@ -202,6 +218,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("groups")
+    sub.add_parser("logos")
     p_tokens = sub.add_parser("tokens")
     p_tokens.add_argument("--group")
     p_tokens.add_argument("--theme")
@@ -224,6 +241,15 @@ def main():
             data = json.loads(path.read_text())
             parent = f"  (parent: {data['parent']})" if data.get("parent") else ""
             print(f"{slug:24} {data.get('name', '')}{parent}")
+    elif args.command == "logos":
+        directory = wordmark_dir()
+        if directory is None:
+            sys.exit("no official wordmark files found. Looked in:\n  " + "\n  ".join(str(d) for d in LOGO_DIRS)
+                     + "\nInstall them once: python3 scripts/install_wordmarks.py ~/Downloads/duke_wordmark.zip")
+        print(directory)
+        for f in sorted(directory.iterdir()):
+            if f.suffix in (".svg", ".png"):
+                print(f"  {f.name}")
     elif args.command == "contrast":
         if len(args.pairs) % 2:
             sys.exit("error: give colors in pairs: FG BG [FG BG ...]")
