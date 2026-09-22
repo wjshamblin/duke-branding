@@ -31,7 +31,12 @@ Pick the route that matches how you want updates to arrive.
 /plugin install duke-branding@duke-branding
 ```
 
-Then open `/plugin` > Marketplaces > `duke-branding` and switch on auto-update. Use the SSH
+Then open `/plugin` > Marketplaces > `duke-branding` and switch on auto-update.
+
+**Claude Desktop.** Customize > Plugins > Add, from the GitHub URL above. The plugin page's
+**Update** button pulls the latest commit on demand (tested). The skill then runs in a
+sandbox whose home folder is not yours, so wordmarks come from a connected folder or an
+attachment, see below. Use the SSH
 address as shown: Claude Code's background update check cannot sign in to a private
 repository over HTTPS, but SSH works when your key is loaded. The GitHub mirror works too:
 `/plugin marketplace add wjshamblin/duke-branding`. Tested from both with the `claude` CLI.

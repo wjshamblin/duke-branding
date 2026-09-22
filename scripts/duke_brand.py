@@ -97,12 +97,36 @@ def load_group(slug, seen=()):
     return merged
 
 
+IN_SANDBOX = Path.home() == Path("/root") or str(SKILL_DIR).startswith("/mnt/")
+
+
 def wordmark_dir():
-    """First folder that holds an official wordmark file, or None."""
+    """First folder that holds an official wordmark file, or None.
+
+    In a hosted sandbox (Claude Desktop, claude.ai, ChatGPT) the user's own machine is out
+    of reach, so the only other place the files can be is a folder the user connected or
+    attached, mounted somewhere under /mnt. Search that, shallowly, before giving up."""
     for directory in LOGO_DIRS:
         if list(directory.glob("duke_wordmark_*.svg")) or list(directory.glob("duke_wordmark_*.png")):
             return directory
+    if IN_SANDBOX and Path("/mnt").exists():
+        for depth in range(1, 6):
+            for hit in Path("/mnt").glob("/".join(["*"] * depth) + "/duke_wordmark_*.*"):
+                if "/mnt/skills" not in str(hit) and hit.suffix in (".svg", ".png"):
+                    return hit.parent
     return None
+
+
+MISSING_WORDMARKS = """No official Duke wordmark files are available to this copy of the skill.
+Say so in the FIRST line of the reply, then offer the user these, in order:
+  1. Attach the file to this chat: duke_wordmark_white.png for a dark background,
+     duke_wordmark_navyblue_012169.png for a light one. Download (Duke NetID):
+     https://brand.duke.edu/logos/#downloads
+  2. Claude Desktop / Cowork: connect a folder that holds the files (Add folder).
+     A machine set up with the installer has them in ~/.duke-branding/logos.
+  3. On a machine with a shell (Claude Code, a terminal), install them once:
+     python3 scripts/install_wordmarks.py ~/Downloads/duke_wordmark.zip
+Until then use a labelled placeholder. Never redraw, type or generate the wordmark."""
 
 
 def resolve(group_slug, theme_name):
@@ -163,8 +187,7 @@ def resolve(group_slug, theme_name):
 
     logos = wordmark_dir()
     if logos is None:
-        warnings.append("no official wordmark files found (looked in " + ", ".join(str(d) for d in LOGO_DIRS)
-                        + ") - use a file the user attached or connected, else a labelled placeholder, and say so first")
+        warnings.append(MISSING_WORDMARKS.replace("\n", " "))
     return {"theme": theme_name, "colors": colors, "fonts": fonts, "wordmarks": str(logos) if logos else None,
             "group": group, "warnings": warnings}
 
@@ -244,8 +267,8 @@ def main():
     elif args.command == "logos":
         directory = wordmark_dir()
         if directory is None:
-            sys.exit("no official wordmark files found. Looked in:\n  " + "\n  ".join(str(d) for d in LOGO_DIRS)
-                     + "\nInstall them once: python3 scripts/install_wordmarks.py ~/Downloads/duke_wordmark.zip")
+            looked = "\n  ".join(str(d) for d in LOGO_DIRS) + ("\n  /mnt/** (connected or attached folders)" if IN_SANDBOX else "")
+            sys.exit(f"Looked in:\n  {looked}\n\n{MISSING_WORDMARKS}")
         print(directory)
         for f in sorted(directory.iterdir()):
             if f.suffix in (".svg", ".png"):

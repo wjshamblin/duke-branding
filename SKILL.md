@@ -213,10 +213,13 @@ may not have them: they are Duke trademarks behind NetID login, so they are not 
 and a marketplace install or an early zip arrives without them. So, before building,
 run `python3 scripts/duke_brand.py logos`. It checks, in order, `./.duke-branding/logos`,
 `~/.duke-branding/logos` (the standing folder that survives marketplace updates), and this
-skill's own `assets/logos/tight/`, and prints the first that has files. Without a shell,
-look in those three places by hand and nowhere else: not the user's home folder in
-general, not Downloads, not other folders named `duke-branding`. If none has files, check
-whether the user attached a
+skill's own `assets/logos/tight/`, and, in a hosted sandbox, any folder the user
+connected or attached under `/mnt`. It prints the first that has files. When it finds
+none, it prints the exact message to relay to the user (attach the file; connect a
+folder; or install once on a real machine): relay it in the first line of the reply, do
+not improvise a different instruction. Without a shell, look in those places by hand and
+nowhere else: not the home folder in general, not Downloads, not other folders named
+`duke-branding`. If none has files, check whether the user attached a
 `duke_wordmark*.svg` or `.png`, or has one in the working folder or in a folder they
 connected to the session (a marketplace install never carries the wordmarks, so users
 on that route keep them in a connected folder). Use that file. Only
