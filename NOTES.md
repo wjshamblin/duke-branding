@@ -49,8 +49,7 @@ left alone because it was already on-brand.
 ## 2026-09-21 (later): first measured evaluation
 
 Ran Anthropic's `skill-creator` process: three realistic prompts, each run by a fresh
-agent **with** the skill and **without** it, graded by script. Definitions and grader are
-in [`evals/`](evals/). Raw run outputs are kept outside this repository.
+agent **with** the skill and **without** it, graded by script. The definitions, grader and raw runs are kept beside this repository, not in it.
 
 | Test | With skill | Without |
 |---|---|---|

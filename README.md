@@ -66,7 +66,7 @@ For ChatGPT on the web (Plugins > Skills > Create > Upload from your computer) a
 the web or desktop (Customize > Skills > + > Create skill > Upload a skill):
 
 ```bash
-cd .. && zip -r duke-branding.zip duke-branding -x "*/.git/*" "*/.claude-plugin/*" "*/evals/*" "*/NOTES.md" "*.DS_Store"
+cd .. && zip -r duke-branding.zip duke-branding -x "*/.git/*" "*/.claude-plugin/*" "*/NOTES.md" "*.DS_Store"
 ```
 
 ### Whichever route: the wordmark files
@@ -175,14 +175,13 @@ duke-branding/       this repository
 ├── assets/          Files used in the output: CSS, templates, tokens, logos, examples
 ├── scripts/         Code that is run rather than read
 ├── groups/          This skill's own extension point: one folder per group
-├── evals/           Test prompts and the grader. For maintainers, never loaded by an agent
 ├── .claude-plugin/  plugin.json and marketplace.json, for marketplace installs
 ├── README.md        This file, for people
 └── NOTES.md         What real use taught, and what changed
 ```
 
-`SKILL.md` never mentions `README.md`, `NOTES.md` or `evals/`, so an agent never loads them.
-They cost nothing at run time.
+`SKILL.md` never mentions `README.md` or `NOTES.md`, so an agent never loads them. They
+cost nothing at run time.
 
 ## Progressive disclosure: what gets loaded, and when
 
@@ -345,7 +344,8 @@ Finished examples, rebuilt from the skill's own templates by `scripts/make_examp
 ## Measured, not assumed
 
 Three realistic tasks, each run by a fresh agent with the skill and without it, graded by
-script ([`evals/`](evals/)). Round one: **97% with the skill, 82% without**, with a tie on the
+script (the prompts and grader are kept with the maintainer's eval runs, outside this
+repository). Round one: **97% with the skill, 82% without**, with a tie on the
 Canvas page, where the logs showed the skill's guidance was wrong. After fixing it, round
 two: **100% new skill, 93% old skill, 83% no skill.** The caveats matter as much as the
 numbers, and both are in [`NOTES.md`](NOTES.md).
