@@ -194,7 +194,9 @@ official asset, template or link.
 flowchart TD
     A{"Group logo already<br/>contains the Duke wordmark?"} -->|yes| B[Use the group logo alone]
     A -->|no| C{"assets/logos/tight/<br/>has files?"}
-    C -->|no| D[Labelled placeholder<br/>+ tell user + download link]
+    C -->|no| U{"User attached or<br/>has a wordmark file?"}
+    U -->|yes| E
+    U -->|no| D["Say so FIRST, in one line:<br/>what is missing, the download<br/>link, 'attach it and I will place it'.<br/>Then a labelled placeholder"]
     C -->|yes| E{Background}
     E -->|white or pale| F[navyblue_012169]
     E -->|Navy, Royal, dark| G[white]
@@ -205,7 +207,18 @@ flowchart TD
     I -->|yes| K[Same row, far side,<br/>never joined, wordmark<br/>not the larger mark]
 ```
 
-Official wordmark files are bundled in `assets/logos/tight/`. Read
+The official wordmark files belong in `assets/logos/tight/`, but a copy of this skill
+may not have them: they are Duke trademarks behind NetID login, so they are not in git,
+and a marketplace install or an early zip arrives without them. So, before building,
+look: `ls assets/logos/tight/`. If it is empty, check whether the user attached a
+`duke_wordmark*.svg` or `.png` or has one in the working folder, and use that. Only
+then fall back to a placeholder, and make the first line of the reply say that the
+wordmark is missing, why, where to get it
+(https://brand.duke.edu/logos/#downloads, needs NetID), and that attaching the file is
+enough for it to be placed. A placeholder mentioned only at the end of a long reply, or
+not at all, gets published. Do not try to download the file: the site needs a login.
+
+When a file is present, read
 `assets/logos/README.md` for the file-to-background table and sizing: the capital D
 is only 46% of the image height, so a wordmark sized by eye is usually below Duke's
 minimum. Lockup geometry and the seven sanctioned designs are in
