@@ -1,30 +1,29 @@
 # Official Duke wordmark files
 
-**If this README is the only thing in this folder, that is expected, not an error.** This
-copy of the skill came from git (a marketplace or clone install), and the wordmark files
-are not in git because they are Duke trademarks distributed behind NetID login. The skill
-also looks in `./.duke-branding/logos` and `~/.duke-branding/logos`, which survive updates:
-`python3 scripts/duke_brand.py logos` prints the folder in use. To set that folder up once
-on a machine, download the official zip (sign in at https://brand.duke.edu/logos/#downloads)
-and run `python3 scripts/install_wordmarks.py ~/Downloads/duke_wordmark.zip`. Failing all
-that, use a file the user attached or connected, or a labelled placeholder, and say so in
-the first line of the reply. Never search the rest of the machine for the files.
-
-Downloaded from https://brand.duke.edu/logos/#downloads (Duke NetID required).
-These are registered trademarks of Duke University. **Do not redistribute this
-folder outside Duke**: exclude it when sharing or publishing the skill.
+Duke's wordmark is a registered trademark of Duke University. Use it only as the brand
+guide describes: official files, never altered, redrawn or typed. The files here are
+Duke's own, from https://brand.duke.edu/logos/#downloads. That download page needs a
+NetID, but the artwork itself is served publicly by every duke.edu site, so committing
+the ready-to-use files here (in a repository used by Duke staff) keeps nothing secret
+and lets every install of the skill carry them.
 
 ```
 logos/
-├── tight/                     USE THESE. Same artwork, canvas trimmed to exactly the
-│                              required clear space (half the width of the capital D)
-├── original/                  Untouched official files, very large built-in margin
-└── subbranding-reference/     Official lockup option sheets and spec sheets (PDF)
+├── tight/                     USE THESE, committed. Same artwork, canvas trimmed to
+│                              exactly the required clear space (half the width of the D)
+├── original/                  Untouched official files, very large built-in margin.
+│                              Not in git; download if you need them
+└── subbranding-reference/     Official lockup option sheets and spec sheets (PDF).
+                               Not in git; download from the Branding page
 ```
 
-Each folder holds both wordmarks (`duke_wordmark_*`, `duke_university_wordmark_*`)
-in four colors (`navyblue_012169`, `royalblue_00539B`, `black`, `white`) as SVG and
-transparent PNG.
+Each set holds both wordmarks (`duke_wordmark_*`, `duke_university_wordmark_*`) in four
+colors (`navyblue_012169`, `royalblue_00539B`, `black`, `white`) as SVG and transparent PNG.
+
+The skill looks first in `./.duke-branding/logos` and `~/.duke-branding/logos`, then here,
+so a project or a machine can override these files. `python3 scripts/duke_brand.py logos`
+prints the folder in use. `install_wordmarks.py` fills the machine-level folder from an
+official zip; with `tight/` committed you only need it when Duke issues new artwork.
 
 ## Which file
 

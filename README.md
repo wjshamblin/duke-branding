@@ -74,19 +74,12 @@ the web or desktop (Customize > Skills > + > Create skill > Upload a skill):
 cd .. && zip -r duke-branding.zip duke-branding -x "*/.git/*" "*/.claude-plugin/*" "*/NOTES.md" "*.DS_Store"
 ```
 
-### Whichever route: the wordmark files
+### Whichever route: the wordmark files are included
 
-The official Duke wordmark files are not in git (see
-[Official Duke assets](#official-duke-assets)), so:
-
-| Route | Wordmarks |
-|---|---|
-| 1, marketplace | Not in the plugin, and the plugin folder is replaced on every update. Instead, install them **once, outside the skill**: download the official zip (NetID) and run `python3 scripts/install_wordmarks.py ~/Downloads/duke_wordmark.zip`, which writes them to `~/.duke-branding/logos/`. Every copy of the skill on that machine looks there. In Claude Desktop, which runs the skill in a sandbox, connect that folder to the session (Cowork: Add folder) or attach the file when asked |
-| 2, clone | Add them once to `assets/logos/`. `git pull` leaves them alone |
-| 3, zip | Include them in the zip you build, and keep that zip inside Duke |
-
-If the wordmark matters for your work, use Route 2. Install by one route only: a plugin
-and a folder copy of the same skill both load, and the agent sees it twice.
+`assets/logos/tight/` is committed, so every route carries the official wordmark. A
+project or machine can override it with its own copy in `./.duke-branding/logos` or
+`~/.duke-branding/logos`. Install by one route only: a plugin and a folder copy of the
+same skill both load, and the agent sees it twice.
 
 Nothing in the skill assumes a particular agent. The frontmatter follows the
 [specification](https://agentskills.io/specification) and passes its reference validator
@@ -157,8 +150,6 @@ Two things to remember when updating:
   folder are outside the skill, so an update never touches them. Profiles you added inside
   the skill's own `groups/` folder are ordinary files: `git pull` keeps them, a fresh
   upload replaces them.
-- **The wordmark files are not in git.** A clone keeps the ones you added. A fresh upload
-  needs them added to the zip again.
 
 Sources: [Skills in ChatGPT](https://help.openai.com/en/articles/20001066-skills-in-chatgpt),
 [Build skills (OpenAI)](https://learn.chatgpt.com/docs/build-skills),
@@ -369,16 +360,13 @@ numbers, and both are in [`NOTES.md`](NOTES.md).
 
 ## Official Duke assets
 
-The Duke wordmark files and sub-branding spec sheets are registered trademarks
-distributed behind Duke NetID login. They are **excluded from this repo** by
-`.gitignore` and must not be redistributed outside Duke.
-
-To add them after cloning, sign in at https://brand.duke.edu/logos/#downloads,
-download the wordmark zip, and place the digital RGB SVG and PNG files under
-`assets/logos/original/`. Then run
-`python3 scripts/make_tight_logos.py` to build the `tight/` variants
-(same artwork, canvas trimmed to exactly the required clear space). Without these files the skill still
-works and falls back to a labelled placeholder.
+The ready-to-use wordmark files (`assets/logos/tight/`) are committed, so every install
+carries them. Duke offers the files to its community behind a NetID login, but the same
+artwork is served publicly by every duke.edu site, so nothing here is secret; the GitHub
+mirror is public because Claude Desktop's plugin install requires it. What stays out of git:
+the untouched originals and the sub-branding spec sheets, both downloadable from
+https://brand.duke.edu/logos/#downloads and https://brand.duke.edu/branding/ with a NetID.
+`assets/logos/README.md` covers sizing and which color to use on which background.
 
 All colors, typography and rules come from https://brand.duke.edu/. This project is
 not an official Duke University product.

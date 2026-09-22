@@ -189,6 +189,16 @@ both, but only for a **plugin listed in a marketplace**, never for a bare upload
   keeps the wordmarks. A durable fix would be a wordmark folder outside the skill, the way
   group profiles already have one.
 
+## 2026-09-22: the wordmarks go into git after all
+
+A day of workarounds (standing folders, connected folders, attachments, a data-URI
+embedder) all existed to cope with one decision: keeping the wordmark files out of git
+because the download page is behind NetID. Checking Duke's pages found no written
+"do not distribute" rule, only usage rules and the login gate, and the same SVG is served
+publicly by every duke.edu site. Committing `assets/logos/tight/` removes the whole class
+of problem: every install route carries the files. The fallbacks stay for overrides and
+trimmed copies. Lesson: check the actual constraint before designing around it.
+
 ### General lessons for writing skills
 
 1. **Use it on real work the same day.** Every gap above was invisible until then.

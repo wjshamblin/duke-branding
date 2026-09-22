@@ -208,10 +208,9 @@ flowchart TD
     I -->|yes| K[Same row, far side,<br/>never joined, wordmark<br/>not the larger mark]
 ```
 
-The official wordmark files belong in `assets/logos/tight/`, but a copy of this skill
-may not have them: they are Duke trademarks behind NetID login, so they are not in git,
-and a marketplace install or an early zip arrives without them. So, before building,
-run `python3 scripts/duke_brand.py logos`. It checks, in order, `./.duke-branding/logos`,
+The official wordmark files ship in `assets/logos/tight/`. A copy of this skill can still
+lack them (an early zip, a trimmed upload), and a project or machine may override them,
+so before building run `python3 scripts/duke_brand.py logos`. It checks, in order, `./.duke-branding/logos`,
 `~/.duke-branding/logos` (the standing folder that survives marketplace updates), and this
 skill's own `assets/logos/tight/`, and, in a hosted sandbox, any folder the user
 connected or attached under `/mnt`. It prints the first that has files. When it finds
@@ -221,8 +220,7 @@ not improvise a different instruction. Without a shell, look in those places by 
 nowhere else: not the home folder in general, not Downloads, not other folders named
 `duke-branding`. If none has files, check whether the user attached a
 `duke_wordmark*.svg` or `.png`, or has one in the working folder or in a folder they
-connected to the session (a marketplace install never carries the wordmarks, so users
-on that route keep them in a connected folder). Use that file. Only
+connected to the session. Use that file. Only
 then fall back to a placeholder, and make the first line of the reply say that the
 wordmark is missing, why, where to get it
 (https://brand.duke.edu/logos/#downloads, needs NetID), and that attaching the file is

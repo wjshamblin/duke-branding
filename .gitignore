@@ -1,9 +1,8 @@
-# Official Duke trademark files: distributed behind Duke NetID login, so not committed.
-# Download them yourself (assets/logos/README.md), then run scripts/make_tight_logos.py
+# Duke wordmark files: tight/ is committed so every install carries it. The untouched
+# originals and the sub-branding spec PDFs are Duke-internal downloads, kept out of git.
 assets/logos/original/
-assets/logos/tight/
 assets/logos/subbranding-reference/
-# Generated files that embed the official wordmark (the PNG previews are kept)
+# Generated files that embed the wordmark (the PNG previews are kept)
 assets/showcase/showcase.html
 assets/showcase/showcase.pdf
 
