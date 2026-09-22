@@ -36,9 +36,10 @@ See what finished pieces look like in `assets/examples/` before building.
    plus styled `table`, `code` and `pre`.
 
 Header markup and lockup rules: `references/logo-and-voice.md`. Wordmark files and
-sizing: `assets/logos/README.md`. A browser cannot load a file from the skill folder,
-so for a standalone page inline the SVG as a `data:` URI (about 6 KB), for Canvas
-upload it to course Files, and for email host the PNG at an `https` URL.
+sizing: `assets/logos/README.md`. **Never write a file path into `src`**: the page is
+opened somewhere else, where the path does not exist. For a standalone page embed the
+file with `python3 scripts/duke_brand.py wordmark --color white` (a `data:` URI `<img>`
+tag), for Canvas upload it to course Files, and for email host the PNG at an `https` URL.
 
 ## Canvas
 

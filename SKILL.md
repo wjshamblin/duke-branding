@@ -229,6 +229,12 @@ wordmark is missing, why, where to get it
 enough for it to be placed. A placeholder mentioned only at the end of a long reply, or
 not at all, gets published. Do not try to download the file: the site needs a login.
 
+When a file is present and the output is HTML, never reference it by path. The page will
+be opened on a machine where that path does not exist, and in a sandbox the path is not
+even on the user's computer. Embed it: `python3 scripts/duke_brand.py wordmark --color
+white` prints an `<img>` tag with the file inline as a `data:` URI (about 6 KB). For PDF
+the same tag works. For PowerPoint and Word, insert the file itself.
+
 When a file is present, read
 `assets/logos/README.md` for the file-to-background table and sizing: the capital D
 is only 46% of the image height, so a wordmark sized by eye is usually below Duke's

@@ -4,6 +4,8 @@
 Usage:
   duke_brand.py groups
   duke_brand.py logos                 (where the official wordmark files are, if anywhere)
+  duke_brand.py wordmark [--color white] [--university] [--format svg|png] [--height 56]
+                                      (an <img> tag with the file embedded, for any HTML the user will open elsewhere)
   duke_brand.py tokens [--group SLUG] [--theme alternate|primary] [--format json|css]
   duke_brand.py contrast FG BG [FG BG ...]   (palette names such as cast-iron, or hex values)
   duke_brand.py render TEMPLATE [--group SLUG] [--theme ...]   fill {{placeholders}} in an inline-style template
@@ -218,6 +220,25 @@ def as_css(tokens):
 PREPOSITIONS = {"of", "the", "for", "and", "in", "at"}
 
 
+def wordmark_tag(color, university, fmt, height):
+    """An <img> tag whose src is a data: URI, so the page works wherever it is opened.
+
+    A file path only works on the machine that produced the page; a sandbox path never
+    works for the user. The SVG is about 6 KB, so embedding costs nothing."""
+    import base64
+    directory = wordmark_dir()
+    if directory is None:
+        sys.exit(MISSING_WORDMARKS)
+    name = f"duke_{'university_' if university else ''}wordmark_{color}.{fmt}"
+    path = directory / name
+    if not path.exists():
+        sys.exit(f"error: {name} not found in {directory}. Present: {', '.join(sorted(f.name for f in directory.iterdir()))}")
+    mime = "image/svg+xml" if fmt == "svg" else "image/png"
+    data = base64.b64encode(path.read_bytes()).decode()
+    alt = "Duke University" if university else "Duke"
+    return f'<img src="data:{mime};base64,{data}" alt="{alt}" style="height:{height}px;width:auto;display:block">'
+
+
 def render(template, tokens):
     """Fill {{name}} placeholders in an inline-style template (Canvas, email).
 
@@ -242,6 +263,11 @@ def main():
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("groups")
     sub.add_parser("logos")
+    p_wm = sub.add_parser("wordmark", help="print an <img> tag with the wordmark embedded as a data: URI")
+    p_wm.add_argument("--color", choices=["white", "navyblue_012169", "royalblue_00539B", "black"], default="navyblue_012169")
+    p_wm.add_argument("--university", action="store_true")
+    p_wm.add_argument("--format", choices=["svg", "png"], default="svg")
+    p_wm.add_argument("--height", type=int, default=56, help="pixels; 52 is the minimum for the tight files")
     p_tokens = sub.add_parser("tokens")
     p_tokens.add_argument("--group")
     p_tokens.add_argument("--theme")
@@ -273,6 +299,8 @@ def main():
         for f in sorted(directory.iterdir()):
             if f.suffix in (".svg", ".png"):
                 print(f"  {f.name}")
+    elif args.command == "wordmark":
+        print(wordmark_tag(args.color, args.university, args.format, args.height))
     elif args.command == "contrast":
         if len(args.pairs) % 2:
             sys.exit("error: give colors in pairs: FG BG [FG BG ...]")
