@@ -76,7 +76,7 @@ The official Duke wordmark files are not in git (see
 
 | Route | Wordmarks |
 |---|---|
-| 1, marketplace | **Not included, and cannot be added durably**: the agent replaces its copy on every update. The skill still works, and uses a labelled placeholder plus the download link |
+| 1, marketplace | **Not included, and cannot be added durably**: the agent replaces its copy on every update. Keep the files in a folder of your own and connect it to the session (Cowork: Add folder), or attach the file when asked. Otherwise the skill uses a labelled placeholder plus the download link |
 | 2, clone | Add them once to `assets/logos/`. `git pull` leaves them alone |
 | 3, zip | Include them in the zip you build, and keep that zip inside Duke |
 

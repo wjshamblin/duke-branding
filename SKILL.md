@@ -216,7 +216,9 @@ a plugin cache). List its `assets/logos/tight/`. That is the only place to look.
 search the user's home folder, Downloads, or any other folder named `duke-branding`:
 those are not this skill, and asking for access to them wastes the user's time. If the
 folder is empty, check whether the user attached a
-`duke_wordmark*.svg` or `.png` or has one in the working folder, and use that. Only
+`duke_wordmark*.svg` or `.png`, or has one in the working folder or in a folder they
+connected to the session (a marketplace install never carries the wordmarks, so users
+on that route keep them in a connected folder). Use that file. Only
 then fall back to a placeholder, and make the first line of the reply say that the
 wordmark is missing, why, where to get it
 (https://brand.duke.edu/logos/#downloads, needs NetID), and that attaching the file is
