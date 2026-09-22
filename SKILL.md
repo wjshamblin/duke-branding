@@ -193,7 +193,7 @@ official asset, template or link.
 ```mermaid
 flowchart TD
     A{"Group logo already<br/>contains the Duke wordmark?"} -->|yes| B[Use the group logo alone]
-    A -->|no| C{"assets/logos/tight/<br/>has files?"}
+    A -->|no| C{"THIS skill folder's<br/>assets/logos/tight/<br/>has files?"}
     C -->|no| U{"User attached or<br/>has a wordmark file?"}
     U -->|yes| E
     U -->|no| D["Say so FIRST, in one line:<br/>what is missing, the download<br/>link, 'attach it and I will place it'.<br/>Then a labelled placeholder"]
@@ -210,7 +210,12 @@ flowchart TD
 The official wordmark files belong in `assets/logos/tight/`, but a copy of this skill
 may not have them: they are Duke trademarks behind NetID login, so they are not in git,
 and a marketplace install or an early zip arrives without them. So, before building,
-look: `ls assets/logos/tight/`. If it is empty, check whether the user attached a
+look **inside this skill's own folder**: the directory that contains this SKILL.md,
+wherever the host put it (a sandbox mount such as `/mnt/skills/...`, `~/.claude/skills/`,
+a plugin cache). List its `assets/logos/tight/`. That is the only place to look. Do not
+search the user's home folder, Downloads, or any other folder named `duke-branding`:
+those are not this skill, and asking for access to them wastes the user's time. If the
+folder is empty, check whether the user attached a
 `duke_wordmark*.svg` or `.png` or has one in the working folder, and use that. Only
 then fall back to a placeholder, and make the first line of the reply say that the
 wordmark is missing, why, where to get it
