@@ -1,5 +1,14 @@
 # Official Duke wordmark files
 
+**If this README is the only thing in this folder, that is expected, not an error.** This
+copy of the skill came from git (a marketplace or clone install), and the wordmark files
+are not in git because they are Duke trademarks distributed behind NetID login. Do not
+search elsewhere on the machine for them. Look only for a file the user attached, or in a
+folder the user connected to the session, or use a labelled placeholder and tell the user
+in the first line of the reply. To restore this folder in a clone: sign in at
+https://brand.duke.edu/logos/#downloads, unzip the digital RGB SVG and PNG files into
+`original/`, and run `python3 scripts/make_tight_logos.py`.
+
 Downloaded from https://brand.duke.edu/logos/#downloads (Duke NetID required).
 These are registered trademarks of Duke University. **Do not redistribute this
 folder outside Duke**: exclude it when sharing or publishing the skill.
